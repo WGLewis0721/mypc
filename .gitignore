@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+.output/
+
+# wix / astro local
+.wix/
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+*.log
+npm-install.log
+seed.log
+seed-result.json
+.seed-exit
+
+# os / editor
+.DS_Store
+Thumbs.db
