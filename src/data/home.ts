@@ -18,7 +18,7 @@ export const HERO = {
   script: "The next generation of",
   title: ["Montgomery", "Leadership"],
   tagline: ["Connect.", "Collaborate.", "Cultivate."],
-  lede: "A city-sponsored council building the next generation of civic leaders who drive change, strengthen community, and serve Montgomery.",
+  lede: "A council of young professionals building the next generation of civic leaders who drive change, strengthen community, and serve Montgomery.",
   primary: { label: "Explore MYPC", href: "#focus" },
   secondary: { label: "Upcoming Events", href: "#events" },
 };
@@ -95,7 +95,7 @@ export const SOCIAL = {
 
 export const FOOTER = {
   blurb:
-    "A city-sponsored council of young professionals committed to civic engagement, leadership development, and community impact.",
+    "A council of young professionals committed to civic engagement, leadership development, and community impact.",
   quickLinks: NAV,
   contact: {
     email: "info@mypcmgm.org",

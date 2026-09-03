@@ -89,9 +89,13 @@ Wix CLI manages them; `wix env pull` retrieves them and the hosting runtime inje
 
 ## Decisions made
 
-- **Concept:** the Mayor's Young Professional Council (MYPC) — a city-sponsored council of young
+- **Concept:** the Mayor's Young Professional Council (MYPC) — a council of young
   professionals in Montgomery, AL. Primary CTA: **apply to join**. Brand character: civic, editorial,
   premium-but-warm.
+  - **No City-affiliation claims on the site.** "City-sponsored" / "City of Montgomery" sub-branding
+    was removed from all visitor-visible copy (logo lockup, hero, footer, About, home mission)
+    pending verified partnership wording + logo rights. Keep new copy affiliation-neutral until the
+    client supplies confirmed language.
 - **Verticals:** blog (news), events (RSVP/tickets), forms (join + contact applications), members
   (login / account). Storefront/bookings/etc. not used.
 - **Brand / visual direction:** the MYPC brandkit (`brief/ChatGPT Image Sep 2, 2026, 10_52_11 PM (1).png`)
