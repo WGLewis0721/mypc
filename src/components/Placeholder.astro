@@ -1,22 +1,21 @@
 ---
 import Icon from "./Icon.astro";
 /**
- * Stand-in for approved photography. Keeps aspect ratio reserved so swapping in
- * a real <img> causes no layout shift. `label` records the art-direction intent.
+ * Decorative image stand-in. Keeps the aspect ratio reserved so swapping in a real
+ * <img> causes no layout shift.
  */
 interface Props {
   ratio?: string; // e.g. "4 / 5", "4 / 3", "16 / 9"
-  label: string;
+  label?: string;
   tone?: "navy" | "navy-800";
   class?: string;
 }
 const { ratio = "4 / 3", label, tone = "navy-800", class: cls } = Astro.props;
 const bg = tone === "navy" ? "var(--color-navy-900)" : "var(--color-navy-800)";
 ---
-<div class={`ph ${cls ?? ""}`} style={`--ph-ratio:${ratio};--ph-bg:${bg}`}>
+<div class={`ph ${cls ?? ""}`} style={`--ph-ratio:${ratio};--ph-bg:${bg}`} aria-hidden="true">
   <Icon name="star" size={22} />
-  <span class="ph__label">{label}</span>
-  <span class="ph__todo">TODO: client to supply</span>
+  {label && <span class="ph__label">{label}</span>}
 </div>
 
 <style>
@@ -43,11 +42,5 @@ const bg = tone === "navy" ? "var(--color-navy-900)" : "var(--color-navy-800)";
     color: var(--color-cloud);
     max-width: 26ch;
     text-wrap: balance;
-  }
-  .ph__todo {
-    font-size: 0.625rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgb(255 255 255 / 0.35);
   }
 </style>

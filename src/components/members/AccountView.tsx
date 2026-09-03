@@ -43,8 +43,7 @@ export default function AccountView({ initialMember }: AccountViewProps) {
       </div>
       {!member && (
         <p className="mt-4 text-sm text-muted-foreground">
-          Logged in, but profile details are unavailable — the Wix Members Area app isn't installed
-          on this site.
+          You're signed in, but your profile details aren't available right now.
         </p>
       )}
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}

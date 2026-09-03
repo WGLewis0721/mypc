@@ -72,7 +72,8 @@ function toSummary(raw: Raw): EventSummary {
     // seeded one — read type first.
     registrationType: (reg.type ?? reg.initialType ?? "NONE") as RegistrationType,
     priceLabel: lowestPriceLabel(reg),
-    soldOut: reg.tickets?.soldOut === true,
+    // Only ticketed events can be "sold out" — ignore a stray tickets.soldOut on an RSVP event.
+    soldOut: (reg.type ?? reg.initialType) === "TICKETING" && reg.tickets?.soldOut === true,
     // `categories` is absent on the typed Event (an SDK type gap) — the Raw boundary reads
     // the runtime field the CATEGORIES fieldset populates.
     categories: (raw.categories?.categories ?? [])

@@ -3,20 +3,23 @@ import Layout from "../layouts/Layout.astro";
 import Icon from "../components/Icon.astro";
 ---
 
-<Layout title="Donate | MYPC" active="donate">
+<Layout title="Support the Council | MYPC" active="donate">
   <section class="section section--navy stub">
     <div class="wrap wrap--narrow reveal">
       <p class="stub__eyebrow">Support the Council</p>
-      <h1 class="t-display-l">Donations</h1>
+      <h1 class="t-display-l">Giving</h1>
       <span class="rule"></span>
       <p class="stub__body">
-        This page is a placeholder in the concept build. A payment provider and the
-        Council&rsquo;s giving options are <strong>TODO: client to supply</strong>.
+        Online giving isn&rsquo;t open yet. In the meantime, the most valuable thing
+        you can give the Council is your time — apply to join, or come to an event.
       </p>
-      <a class="btn btn--primary" href="/#join">
-        Explore membership instead
-        <Icon name="arrow-right" size={16} />
-      </a>
+      <div class="stub__actions">
+        <a class="btn btn--primary" href="/join">
+          Apply to Join
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a class="btn btn--secondary-navy" href="/events">Upcoming events</a>
+      </div>
     </div>
   </section>
 </Layout>
@@ -45,8 +48,9 @@ import Icon from "../components/Icon.astro";
     line-height: 1.65;
     margin-bottom: 1.75rem;
   }
-  .stub__body strong {
-    color: #fff;
-    font-weight: 600;
+  .stub__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
   }
 </style>

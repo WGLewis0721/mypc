@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import DemoNotice from "../components/DemoNotice.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
@@ -57,7 +56,6 @@ const {
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <DemoNotice />
     <Header active={active} />
     <main id="main">
       <slot />
