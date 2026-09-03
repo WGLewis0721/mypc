@@ -53,10 +53,10 @@ Keep `CI=1` on every Wix CLI command. Don't smoke-test with a dev server unless 
 returns **HTTP 413** on a large bundle. Two shipped deps blew it past the limit (~35 MB total):
 - `@wix/auto_sdk_forms_forms` — a generated SDK whose ES bundle is **~15 MB** (zod schemas),
   pulled in by `@wix/forms` for `getForm`. Fix: the 2 form schemas are fetched once by
-  `.gen/fetch-forms.mjs` (anon visitor token) into `src/data/forms.raw.json`; `src/wix/forms/forms.ts`
+  `scripts/fetch-forms.mjs` (anon visitor token) into `src/data/forms.raw.json`; `src/wix/forms/forms.ts`
   flattens that at runtime and imports no `@wix/forms`. `submissions.ts` imports
   `@wix/auto_sdk_forms_submissions` directly (not the `@wix/forms` barrel). **Re-run
-  `node .gen/fetch-forms.mjs` after editing a form in the Wix dashboard.**
+  `node scripts/fetch-forms.mjs` after editing a form in the Wix dashboard.**
 - `@wix/ricos` (~5 MB) — the blog rich-text viewer. Fix: `blog/[...slug].astro` renders
   `post.paragraphs` server-side; the `RichContent` island (and `@wix/ricos`) are gone. Rich
   embeds/formatting in post bodies are not rendered.

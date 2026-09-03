@@ -1,11 +1,11 @@
 // Wix Forms schema reads — flattens a raw Form into flat FormDto / FormFieldDto (./types).
 //
 // ⚠️ MYPC deviation from the shipped vertical: the schema is read ONCE at authoring time
-// (`.gen/fetch-forms.mjs`, anonymous visitor token — a schema read needs no secret) and
+// (`scripts/fetch-forms.mjs`, anonymous visitor token — a schema read needs no secret) and
 // committed as `src/data/forms.raw.json`. The runtime flattens that instead of calling
 // `@wix/forms` `getForm`, because pulling `@wix/forms` drags in `@wix/auto_sdk_forms_forms`
 // (~15 MB) and the Wix deploy `complete` endpoint 413s on the resulting bundle. To refresh
-// the schema after editing a form in the Wix dashboard, re-run `node .gen/fetch-forms.mjs`.
+// the schema after editing a form in the Wix dashboard, re-run `node scripts/fetch-forms.mjs`.
 //
 // docs: https://dev.wix.com/docs/api-reference/crm/forms/form-schemas/about-form-fields.md
 import RAW_FORMS from "../../data/forms.raw.json";
@@ -243,14 +243,14 @@ const RAW: Record<string, Raw> = RAW_FORMS as Record<string, Raw>;
 
 /**
  * Read one form by id from the committed schema snapshot. Throws when the id is not in the
- * snapshot — re-run `.gen/fetch-forms.mjs` after adding a form or editing it in the dashboard.
+ * snapshot — re-run `scripts/fetch-forms.mjs` after adding a form or editing it in the dashboard.
  * `async` is kept so call sites (Astro frontmatter `await getForm(...)`) are unchanged.
  */
 export async function getForm(formId: string): Promise<FormDto> {
   const raw = RAW[formId];
   if (!raw) {
     throw new Error(
-      `forms: form "${formId}" is not in src/data/forms.raw.json — re-run node .gen/fetch-forms.mjs`,
+      `forms: form "${formId}" is not in src/data/forms.raw.json — re-run node scripts/fetch-forms.mjs`,
     );
   }
   return toForm(raw);
