@@ -1,16 +1,14 @@
-// Wix Forms schema reads (@wix/forms `forms`) — the only file that touches a raw Form.
-// Returns flat FormDto / FormFieldDto from ./types. Copy as-is; extend by adding functions.
+// Wix Forms schema reads — flattens a raw Form into flat FormDto / FormFieldDto (./types).
 //
-// ⚠️ The visitor token is enough, and the spec says otherwise. Every schema read is listed
-// under the owner scope `SCOPE.FORMS.VIEW-FORM`, and returns 200 on an anonymous visitor:
-// Wix grants implicit visitor access so a published site can render its own forms. Do NOT add
-// a backend, a connector token, or auth.elevate to make a form load.
+// ⚠️ MYPC deviation from the shipped vertical: the schema is read ONCE at authoring time
+// (`.gen/fetch-forms.mjs`, anonymous visitor token — a schema read needs no secret) and
+// committed as `src/data/forms.raw.json`. The runtime flattens that instead of calling
+// `@wix/forms` `getForm`, because pulling `@wix/forms` drags in `@wix/auto_sdk_forms_forms`
+// (~15 MB) and the Wix deploy `complete` endpoint 413s on the resulting bundle. To refresh
+// the schema after editing a form in the Wix dashboard, re-run `node .gen/fetch-forms.mjs`.
 //
-// docs: https://dev.wix.com/docs/sdk/business-solutions/forms/forms/get-form.md
-// docs: https://dev.wix.com/docs/sdk/business-solutions/forms/forms/list-forms.md
 // docs: https://dev.wix.com/docs/api-reference/crm/forms/form-schemas/about-form-fields.md
-import { forms as formsModule } from "@wix/forms";
-import { wixModule } from "../sdk";
+import RAW_FORMS from "../../data/forms.raw.json";
 import type {
   FormAddressPart,
   FormChoice,
@@ -19,8 +17,6 @@ import type {
   FormFieldDto,
   FormValidation,
 } from "./types";
-
-const forms = wixModule(formsModule);
 
 /** The Wix Forms app namespace. Every form this vertical touches lives here. */
 export const FORMS_NAMESPACE = "wix.form_app.form";
@@ -243,27 +239,24 @@ function toForm(raw: Raw): FormDto {
   };
 }
 
+const RAW: Record<string, Raw> = RAW_FORMS as Record<string, Raw>;
+
 /**
- * Read one form by id. Throws when the id is wrong or the form was deleted — a form that
- * cannot load is a setup problem, so fail loudly rather than rendering a hand-built fallback
- * that would drop real enquiries silently.
+ * Read one form by id from the committed schema snapshot. Throws when the id is not in the
+ * snapshot — re-run `.gen/fetch-forms.mjs` after adding a form or editing it in the dashboard.
+ * `async` is kept so call sites (Astro frontmatter `await getForm(...)`) are unchanged.
  */
 export async function getForm(formId: string): Promise<FormDto> {
-  const raw = (await forms.getForm(formId)) as Raw;
-  if (!raw) throw new Error(`forms: form "${formId}" not found.`);
+  const raw = RAW[formId];
+  if (!raw) {
+    throw new Error(
+      `forms: form "${formId}" is not in src/data/forms.raw.json — re-run node .gen/fetch-forms.mjs`,
+    );
+  }
   return toForm(raw);
 }
 
-/**
- * Every form on the site, in the Wix Forms namespace. Use ONE call for several forms on a page
- * rather than a getForm each.
- *
- * ⚠️ Returns only ENABLED forms — a form the owner disabled vanishes from the listing rather
- * than erroring. That is usually right for a public site.
- */
+/** Every form in the committed snapshot, flattened. */
 export async function listForms(): Promise<FormDto[]> {
-  // The namespace is POSITIONAL — an options object here is a type error, and untyped it would
-  // silently list nothing.
-  const res = (await forms.listForms(FORMS_NAMESPACE)) as Raw;
-  return ((res?.forms ?? []) as Raw[]).map(toForm);
+  return Object.values(RAW).map(toForm);
 }

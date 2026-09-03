@@ -6,7 +6,6 @@
 // SEO pieces, the [...slug] rest param, and frontmatter are kept verbatim from the shipped
 // page; only the template is restyled. The body island stays client:only (ricos breaks SSR).
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import RichContent from "../../components/blog/RichContent";
 import { fetchPostBySlug } from "../../wix/blog/posts";
 import { fetchBlogCategories, fetchBlogTags } from "../../wix/blog/taxonomy";
 import type { BlogCategory, BlogTag } from "../../wix/blog/types";
@@ -89,7 +88,13 @@ const postTags = allTags.filter((t) => post!.tagIds.includes(t.id));
           </div>
         )}
         <div class="post__body">
-          <RichContent client:only="react" content={post.richContent} fallbackParagraphs={post.paragraphs} />
+          {
+            post.paragraphs.length > 0 ? (
+              post.paragraphs.map((para) => <p>{para}</p>)
+            ) : (
+              <p style="color:var(--color-ink-500)">This post has no body text yet.</p>
+            )
+          }
         </div>
         {postTags.length > 0 && (
           <div class="post__tags">

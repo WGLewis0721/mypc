@@ -13,7 +13,12 @@
 //
 // docs: https://dev.wix.com/docs/sdk/business-solutions/forms/submissions/create-submission.md
 // docs: https://dev.wix.com/docs/api-reference/crm/forms/form-submissions/about-submission-values.md
-import { submissions as submissionsModule } from "@wix/forms";
+//
+// ⚠️ MYPC deviation: import the submissions SDK module DIRECTLY, not via the `@wix/forms`
+// barrel. The barrel also re-exports `@wix/auto_sdk_forms_forms` (~15 MB), which would ride
+// along into this client island and 413 the Wix deploy. This sub-package is the same module
+// the barrel exposes as `submissions`.
+import * as submissionsModule from "@wix/auto_sdk_forms_submissions";
 import { wixModule } from "../sdk";
 import type { FormFieldDto, FormValues, SubmissionDto } from "./types";
 

@@ -44,7 +44,24 @@ Because the repo already exists (not an empty dir), this is a **connect** run, n
 
 Keep `CI=1` on every Wix CLI command. Don't smoke-test with a dev server unless asked — correctness comes from the shipped code and surfaces at build/release.
 
-**Build memory:** this machine has 8 GB RAM and the client bundle is large (`WixForm` chunk ≈ 11 MB — `@wix/forms` + `@wix/ricos`), so `astro build` OOMs under Node's default heap. `npm run build` / `npm run release` are wrapped with `cross-env NODE_OPTIONS=--max-old-space-size=4096`; run the Wix CLI through those scripts, not bare `wix build`. Follow-up: trim the forms/ricos client graph (manualChunks / lazy ricos) to bring the bundle down.
+**Build memory:** this machine has 8 GB RAM, so `astro build` OOMs under Node's default heap.
+`npm run build` / `npm run release` are wrapped with `cross-env NODE_OPTIONS=--max-old-space-size=4096`
+— run the Wix CLI through those scripts, not bare `wix build`.
+
+**Deploy size (why the forms/blog code deviates from the shipped vertical):** the Wix deploy
+`app-deployments/.../complete` endpoint inlines every built file as base64 in one JSON body and
+returns **HTTP 413** on a large bundle. Two shipped deps blew it past the limit (~35 MB total):
+- `@wix/auto_sdk_forms_forms` — a generated SDK whose ES bundle is **~15 MB** (zod schemas),
+  pulled in by `@wix/forms` for `getForm`. Fix: the 2 form schemas are fetched once by
+  `.gen/fetch-forms.mjs` (anon visitor token) into `src/data/forms.raw.json`; `src/wix/forms/forms.ts`
+  flattens that at runtime and imports no `@wix/forms`. `submissions.ts` imports
+  `@wix/auto_sdk_forms_submissions` directly (not the `@wix/forms` barrel). **Re-run
+  `node .gen/fetch-forms.mjs` after editing a form in the Wix dashboard.**
+- `@wix/ricos` (~5 MB) — the blog rich-text viewer. Fix: `blog/[...slug].astro` renders
+  `post.paragraphs` server-side; the `RichContent` island (and `@wix/ricos`) are gone. Rich
+  embeds/formatting in post bodies are not rendered.
+`astro.config.mjs` also sets `manualChunks` to split `node_modules` per package (keeps any one
+file small). `@wix/ricos` is still in `package.json` but unused — safe to drop.
 
 ## Environment state (verified 2026-09-02)
 
