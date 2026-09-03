@@ -10,7 +10,6 @@ const year = new Date().getFullYear();
     <div class="ft__brand">
       <Logo />
       <p class="ft__blurb">{FOOTER.blurb}</p>
-      <p class="ft__demo">Concept build. Not a real organization.</p>
     </div>
 
     <nav class="ft__col" aria-label="Quick links">
@@ -33,30 +32,14 @@ const year = new Date().getFullYear();
       <h2 class="ft__h">Contact</h2>
       <ul class="ft__contact">
         <li><a href={`mailto:${FOOTER.contact.email}`}>{FOOTER.contact.email}</a></li>
-        <li>{FOOTER.contact.phone}</li>
-        <li>{FOOTER.contact.address}</li>
       </ul>
-      <div class="ft__social">
-        <a href="#" aria-label="Instagram"><Icon name="instagram" size={20} /></a>
-        <a href="#" aria-label="LinkedIn"><Icon name="linkedin" size={20} /></a>
-        <a href="#" aria-label="Facebook"><Icon name="facebook" size={20} /></a>
-      </div>
-    </div>
-
-    <div class="ft__col ft__sponsor">
-      <h2 class="ft__h">Sponsorship</h2>
-      <div class="ft__seal" aria-hidden="true">
-        <Icon name="star" size={26} />
-      </div>
-      <p class="ft__sponsor-line">{FOOTER.sponsor.line}</p>
-      <p class="ft__sponsor-note">{FOOTER.sponsor.note}</p>
     </div>
   </div>
 
   <div class="wrap wrap--wide ft__bar">
     <p>
-      &copy; {year} Mayor&rsquo;s Young Professional Council (working title). Concept
-      build, not affiliated with any real organization.
+      &copy; {year} Mayor&rsquo;s Young Professional Council. A concept demonstration site,
+      not affiliated with any real organization.
     </p>
     <div class="ft__bar-links">
       <a href="/privacy">Privacy Policy</a>
@@ -84,7 +67,7 @@ const year = new Date().getFullYear();
   }
   @media (min-width: 1000px) {
     .ft__grid {
-      grid-template-columns: 1.8fr 1fr 1.3fr 1.3fr;
+      grid-template-columns: 2fr 1fr 1.2fr;
     }
     .ft__brand {
       grid-column: auto;
@@ -97,13 +80,6 @@ const year = new Date().getFullYear();
     color: var(--color-cloud);
     font-size: 0.9375rem;
     line-height: 1.6;
-  }
-  .ft__demo {
-    margin-top: 0.75rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-gold-300);
   }
 
   .ft__h {
@@ -138,48 +114,6 @@ const year = new Date().getFullYear();
     color: var(--color-cloud);
     font-size: 0.875rem;
     line-height: 1.5;
-  }
-  .ft__social {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.25rem;
-  }
-  .ft__social a {
-    display: inline-flex;
-    padding: 0.55rem;
-    border: 1px solid var(--border-on-navy);
-    border-radius: var(--radius-sm);
-    color: #fff;
-    transition:
-      border-color var(--dur) var(--ease),
-      background-color var(--dur) var(--ease);
-  }
-  .ft__social a:hover {
-    border-color: var(--color-gold-500);
-    background: rgb(255 255 255 / 0.05);
-  }
-
-  .ft__sponsor-line {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    color: #fff;
-  }
-  .ft__sponsor-note {
-    margin-top: 0.4rem;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    color: rgb(255 255 255 / 0.45);
-  }
-  .ft__seal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 54px;
-    height: 54px;
-    margin-bottom: 0.85rem;
-    border: 1px solid var(--color-gold-600);
-    border-radius: var(--radius-pill);
-    color: var(--color-gold-500);
   }
 
   .ft__bar {

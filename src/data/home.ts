@@ -1,8 +1,8 @@
 /**
- * PLACEHOLDER CONTENT for the MYPC concept build.
- * Everything here is illustrative and easy to swap. Fictional people and events
- * are marked; anything that would be a real-world fact (dates, venues, contact
- * details, sponsorship terms) is left as `TODO: client to supply`.
+ * Site content for the MYPC concept demonstration.
+ * Officer names/photos are concept stand-ins for the build; the Policy / Projects /
+ * Appointments / Community service areas and the "Connect. Collaborate. Cultivate."
+ * messaging are the approved brand direction.
  */
 
 export const NAV = [
@@ -15,7 +15,6 @@ export const NAV = [
 ] as const;
 
 export const HERO = {
-  // "Connect. Collaborate. Cultivate." + city line are the MYPC brandkit tagline / statement.
   script: "The next generation of",
   title: ["Montgomery", "Leadership"],
   tagline: ["Connect.", "Collaborate.", "Cultivate."],
@@ -23,13 +22,6 @@ export const HERO = {
   primary: { label: "Explore MYPC", href: "#focus" },
   secondary: { label: "Upcoming Events", href: "#events" },
 };
-
-/** Illustrative figures for the concept build (brandkit stat-card style). TODO: client to supply real numbers. */
-export const STATS = [
-  { icon: "users", value: "100+", label: "Members" },
-  { icon: "briefcase", value: "25+", label: "Projects" },
-  { icon: "star", value: "10K+", label: "Community impact" },
-] as const;
 
 export const FOCUS = {
   title: "Four ways we serve the city",
@@ -51,7 +43,7 @@ export const FOCUS = {
       icon: "briefcase",
       accent: "navy",
       title: "Appointments",
-      body: "We serve on boards and commissions to represent the next generation.",
+      body: "We prepare members for appointed civic service on boards and commissions.",
     },
     {
       icon: "heart",
@@ -66,52 +58,18 @@ export const LEADERSHIP = {
   eyebrow: "Featured Leadership",
   title: "Meet the Council",
   viewAll: { label: "View all Council", href: "/council" },
-  // Concept build: portraits are generated placeholders; names from the MYPC brandkit where shown,
-  // otherwise illustrative. TODO: client to supply the confirmed roster, bios, and real headshots.
   featured: {
     name: "Morgan Jackson",
     role: "President · 2026–2027",
     img: "/img/leadership/president.webp",
     blurb:
-      "“Our charge is simple — connect this generation to the work of the city, then give them a real seat at the table. This year we’re focused on housing, workforce, and getting more members appointed to boards.”",
+      "The President chairs the Council, sets the year's priorities with the officers, and keeps the committees moving on housing, workforce, and appointed service.",
   },
   members: [
     { name: "Marcus Ellison", role: "Vice President", img: "/img/leadership/vicepresident.webp" },
     { name: "Danielle Carter", role: "Policy Chair", img: "/img/leadership/policy.webp" },
     { name: "Morgan Clausell", role: "Marketing Chair", img: "/img/leadership/marketing.webp" },
     { name: "Andre Whitfield", role: "Events Chair", img: "/img/leadership/events.webp" },
-  ],
-};
-
-export const EVENTS = {
-  title: "Upcoming Events",
-  viewAll: { label: "View calendar", href: "/#events" },
-  // Illustrative event concepts. Dates, times and venues: TODO client to supply.
-  featured: {
-    month: "MON",
-    day: "00",
-    kicker: "Featured event",
-    title: "New Member Mixer",
-    time: "TODO: time",
-    venue: "TODO: venue, Montgomery, AL",
-    blurb:
-      "An evening for prospective members to meet the Council, hear about the year’s initiatives, and start an application.",
-  },
-  items: [
-    {
-      month: "MON",
-      day: "00",
-      title: "Civic Roundtable",
-      time: "TODO: time",
-      venue: "TODO: venue, Montgomery, AL",
-    },
-    {
-      month: "MON",
-      day: "00",
-      title: "Community Service Day",
-      time: "TODO: time",
-      venue: "TODO: venue, Montgomery, AL",
-    },
   ],
 };
 
@@ -128,22 +86,11 @@ export const MEMBERSHIP = {
 };
 
 export const SOCIAL = {
-  title: "Follow the Movement",
-  lede: "Where the Council shares its work between meetings.",
-  featured: {
-    tag: "Latest",
-    title: "Community highlight headline (placeholder)",
-    body: "TODO: a short standfirst from the client. This slot features one recent story, spotlight, or announcement with an image.",
-  },
-  more: [
-    { tag: "Recap", title: "Event recap headline (placeholder)" },
-    { tag: "Spotlight", title: "Member spotlight headline (placeholder)" },
-  ],
-  channels: [
-    { icon: "instagram", label: "Instagram", handle: "TODO: @handle" },
-    { icon: "linkedin", label: "LinkedIn", handle: "TODO: /company" },
-    { icon: "facebook", label: "Facebook", handle: "TODO: /page" },
-  ],
+  eyebrow: "In the community",
+  headline: "Young professionals, invested in Montgomery",
+  body: "MYPC members give their time to civic issues, neighborhood projects, and appointed service across the city — and the Council is always looking for the next group ready to step up.",
+  cta: { label: "Apply to Join", href: "/join" },
+  secondary: { label: "See upcoming events", href: "/events" },
 };
 
 export const FOOTER = {
@@ -151,12 +98,6 @@ export const FOOTER = {
     "A city-sponsored council of young professionals committed to civic engagement, leadership development, and community impact.",
   quickLinks: NAV,
   contact: {
-    email: "info@mypcmgm.org", // from the MYPC brandkit
-    phone: "TODO: phone (client to supply)",
-    address: "TODO: mailing address (client to supply)",
-  },
-  sponsor: {
-    line: "In partnership with the City of Montgomery",
-    note: "TODO: confirm relationship, wording, and logo usage rights with the City.",
+    email: "info@mypcmgm.org",
   },
 };

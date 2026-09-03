@@ -7,10 +7,9 @@ import LeadershipCard from "../components/LeadershipCard.astro";
 import EventCard from "../components/EventCard.astro";
 import MembershipSteps from "../components/MembershipSteps.astro";
 import SocialCommunity from "../components/SocialCommunity.astro";
-import StatBar from "../components/StatBar.astro";
 import CTA from "../components/CTA.astro";
 import Icon from "../components/Icon.astro";
-import { FOCUS, LEADERSHIP, MEMBERSHIP, SOCIAL, STATS } from "../data/home";
+import { FOCUS, LEADERSHIP, MEMBERSHIP } from "../data/home";
 import { fetchEvents } from "../wix/events/events";
 import { fetchPosts } from "../wix/blog/posts";
 import type { EventSummary } from "../wix/events/types";
@@ -89,9 +88,6 @@ const latestPosts = posts.slice(0, 3);
           link={{ label: "Meet the full Council", href: "/council" }}
         />
       </div>
-      <div class="reveal" style="margin-bottom:clamp(2rem,1.5rem+2vw,3rem)">
-        <StatBar stats={STATS} tone="bare" />
-      </div>
       <div class="leaders reveal">
         <LeadershipCard featured {...LEADERSHIP.featured} />
         <div class="leaders__row">
@@ -160,7 +156,6 @@ const latestPosts = posts.slice(0, 3);
           loading="lazy"
           decoding="async"
         />
-        <figcaption>A recent MYPC member cohort. <span>Concept image.</span></figcaption>
       </figure>
       <div class="reveal">
         <MembershipSteps steps={MEMBERSHIP.steps} />
@@ -208,12 +203,9 @@ const latestPosts = posts.slice(0, 3);
     )
   }
 
-  <!-- 6 · Social / community -->
+  <!-- 6 · Community -->
   <section id="community" class="section section--paper">
     <div class="wrap wrap--wide">
-      <div class="reveal">
-        <SectionHeader title={SOCIAL.title} lede={SOCIAL.lede} />
-      </div>
       <div class="reveal">
         <SocialCommunity />
       </div>

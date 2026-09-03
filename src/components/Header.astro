@@ -37,7 +37,7 @@ const { active } = Astro.props;
       <span class="hdr__member">
         <MemberMenu client:only="react" />
       </span>
-      <a href="/donate" class="btn btn--primary hdr__donate">Donate</a>
+      <a href="/join" class="btn btn--primary hdr__cta">Apply to Join</a>
       <button
         type="button"
         class="hdr__burger"
@@ -122,9 +122,10 @@ const { active } = Astro.props;
     align-items: center;
     gap: 0.75rem;
   }
-  .hdr__donate {
+  .hdr__cta {
     min-height: 42px;
     padding: 0.6rem 1.1rem;
+    white-space: nowrap;
   }
 
   /* MemberMenu (shipped) styles itself from the @theme tokens for a light ground —
@@ -168,7 +169,7 @@ const { active } = Astro.props;
 
   @media (max-width: 1023px) {
     .hdr__nav,
-    .hdr__donate {
+    .hdr__cta {
       display: none;
     }
     .hdr__burger {

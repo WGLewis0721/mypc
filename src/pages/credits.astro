@@ -3,79 +3,52 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Site Credits | MYPC" active="credits">
-  <section class="section section--navy stub">
-    <div class="wrap wrap--narrow reveal">
-      <p class="stub__eyebrow">Colophon</p>
+  <section class="section section--white">
+    <div class="wrap wrap--narrow reveal legal">
+      <p class="eyebrow">Colophon</p>
       <h1 class="t-display-l">Site Credits</h1>
       <span class="rule"></span>
-      <p class="stub__body">
-        This is a concept build. Design system and layout by Gray Matter Web Studio,
-        applied from the MYPC brandkit. Typography: Playfair Display, Montserrat and
-        Great Vibes (SIL Open Font License).
+
+      <p>
+        A concept demonstration built by Gray Matter Web Studio. Design system and layout
+        applied from the MYPC brandkit.
       </p>
 
-      <h2 class="stub__h2">Imagery</h2>
-      <ul class="stub__list">
-        <li>
-          Hero: the Alabama State Capitol dome, from a photograph published on Flickr
-          (id&nbsp;32495962667), cropped and colour-graded. Licensed
-          <strong>CC&nbsp;BY&nbsp;2.0</strong>. <em>TODO: confirm the photographer&rsquo;s
-          exact credit line before launch.</em>
-        </li>
-        <li>All other photography is a placeholder. <strong>TODO: client to supply.</strong></li>
-      </ul>
+      <h2>Typography</h2>
+      <p>
+        Playfair Display, Montserrat, and Great Vibes, all under the SIL Open Font License.
+      </p>
 
-      <a class="btn btn--secondary-navy" href="/">Back to home</a>
+      <h2>Imagery</h2>
+      <p>
+        Hero photograph: &ldquo;West Front of the Alabama State Capitol, Montgomery, AL&rdquo;
+        via Openverse, licensed CC&nbsp;BY&nbsp;2.0 — cropped and colour-graded. Portraits and
+        group photography were generated for this concept demonstration.
+      </p>
+
+      <a class="btn btn--secondary-light legal__back" href="/">Back to home</a>
     </div>
   </section>
 </Layout>
 
 <style>
-  .stub {
-    min-height: 55vh;
-    display: flex;
-    align-items: center;
+  .legal p {
+    margin-top: 1rem;
+    max-width: 62ch;
+    color: var(--color-ink-500);
+    line-height: 1.7;
   }
-  .stub__eyebrow {
-    font-size: 0.75rem;
+  .legal h2 {
+    margin-top: 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-gold-500);
-    margin-bottom: 0.75rem;
+    color: var(--color-ink-900);
   }
-  .stub .rule {
-    margin: 1.25rem 0;
-  }
-  .stub__body {
-    max-width: 54ch;
-    color: var(--color-cloud);
-    font-size: 1.0625rem;
-    line-height: 1.65;
-  }
-  .stub__h2 {
-    margin: 2rem 0 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-gold-500);
-  }
-  .stub__list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    max-width: 60ch;
-    margin-bottom: 1.75rem;
-    color: var(--color-cloud);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-  }
-  .stub__list strong {
-    color: #fff;
-    font-weight: 600;
-  }
-  .stub__list em {
-    color: rgb(255 255 255 / 0.55);
+  .legal__back {
+    margin-top: 2.5rem;
+    text-decoration: none;
   }
 </style>

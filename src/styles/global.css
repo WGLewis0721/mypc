@@ -113,7 +113,6 @@
   --dur-slow: 480ms;
 
   --header-h: 68px;
-  --demo-h: 34px;
 }
 
 /* ─── base ─────────────────────────────────────────────────────────────────── */
@@ -128,7 +127,7 @@
     -webkit-text-size-adjust: 100%;
     color-scheme: light;
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-h) + var(--demo-h) + 1rem);
+    scroll-padding-top: calc(var(--header-h) + 1rem);
   }
 
   a,

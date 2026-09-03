@@ -59,7 +59,7 @@ export default function EventRegistration({ event }: { event: EventDetail }) {
     return (
       <div className={panel} style={panelStyle}>
         <p className="text-sm" style={{ color: "var(--color-ink-500)" }}>
-          {event.soldOut ? "This event is sold out." : "Registration for this event is closed."}
+          Registration for this event isn&rsquo;t open.
         </p>
       </div>
     );
@@ -145,7 +145,7 @@ export default function EventRegistration({ event }: { event: EventDetail }) {
           {submitting ? "Reserving…" : ticketCount > 0 ? `Get ${ticketCount} ticket${ticketCount > 1 ? "s" : ""}` : "Get tickets"}
         </button>
         <p className="mt-3 text-xs" style={{ color: "var(--color-ink-500)" }}>
-          Demo: completing a paid checkout needs a Wix premium plan and a connected payment method.
+          You&rsquo;ll be taken to a secure checkout page to complete your order.
         </p>
       </div>
     );

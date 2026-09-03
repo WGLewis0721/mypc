@@ -3,47 +3,70 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Privacy Policy | MYPC" active="privacy">
-  <section class="section section--navy stub">
-    <div class="wrap wrap--narrow reveal">
-      <p class="stub__eyebrow">Legal</p>
+  <section class="section section--white">
+    <div class="wrap wrap--narrow reveal legal">
+      <p class="eyebrow">Legal</p>
       <h1 class="t-display-l">Privacy Policy</h1>
       <span class="rule"></span>
-      <p class="stub__body">
-        Placeholder page for the concept build. The Council&rsquo;s privacy policy and
-        data-handling terms are <strong>TODO: client to supply</strong>, reviewed by
-        the City&rsquo;s legal team before launch.
+
+      <p>
+        This website is a concept demonstration built by Gray Matter Web Studio. The
+        Mayor&rsquo;s Young Professional Council shown here is not an operating organization,
+        and the site is not used to run a real membership program.
       </p>
-      <a class="btn btn--secondary-navy" href="/">Back to home</a>
+
+      <h2>Information we collect</h2>
+      <p>
+        You can browse the whole site without giving us anything. If you fill in the contact
+        or membership form, we receive what you enter — typically your name, email address,
+        and the message or answers you provide.
+      </p>
+
+      <h2>How it is used</h2>
+      <p>
+        Form submissions are stored by the site&rsquo;s hosting platform so the demonstration
+        can show a complete flow. They are not sold, and they are not used for advertising.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        The site sets only the cookies its hosting platform needs to load pages and handle
+        form submissions. There are no third-party advertising trackers.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this page can go to
+        <a href="mailto:info@mypcmgm.org">info@mypcmgm.org</a>.
+      </p>
+
+      <a class="btn btn--secondary-light legal__back" href="/">Back to home</a>
     </div>
   </section>
 </Layout>
 
 <style>
-  .stub {
-    min-height: 55vh;
-    display: flex;
-    align-items: center;
+  .legal p {
+    margin-top: 1rem;
+    max-width: 62ch;
+    color: var(--color-ink-500);
+    line-height: 1.7;
   }
-  .stub__eyebrow {
-    font-size: 0.75rem;
+  .legal h2 {
+    margin-top: 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-gold-500);
-    margin-bottom: 0.75rem;
+    color: var(--color-ink-900);
   }
-  .stub .rule {
-    margin: 1.25rem 0;
+  .legal a {
+    color: var(--color-gold-600);
+    text-decoration: underline;
   }
-  .stub__body {
-    max-width: 52ch;
-    color: var(--color-cloud);
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    margin-bottom: 1.75rem;
-  }
-  .stub__body strong {
-    color: #fff;
-    font-weight: 600;
+  .legal__back {
+    margin-top: 2.5rem;
+    text-decoration: none;
   }
 </style>

@@ -15,25 +15,22 @@ function EventCard({ event }: { event: EventSummary }) {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         )}
-        {event.soldOut && (
-          <span
-            className="absolute left-3 top-3 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-wider"
-            style={{ background: "var(--color-red-600)", color: "#fff", borderRadius: "var(--radius-sm)" }}
-          >
-            Sold out
-          </span>
-        )}
       </div>
       <div className="p-5">
         {event.dateLabel && <p className="eyebrow">{event.dateLabel}</p>}
         <h3 className="t-h3 mt-1.5" style={{ color: "var(--color-ink-900)" }}>{event.title}</h3>
         <p className="t-meta mt-1.5" style={{ color: "var(--color-ink-500)" }}>
           {event.locationType === "ONLINE" ? "Online" : event.locationName}
-          {event.priceLabel ? ` · ${event.priceLabel}` : ""}
+          {event.priceLabel && event.registrationType !== "RSVP" ? ` · ${event.priceLabel}` : ""}
         </p>
         {event.registrationType === "RSVP" && (
           <p className="mt-2 text-[0.75rem] font-semibold uppercase tracking-wider" style={{ color: "var(--color-gold-600)" }}>
             Free · RSVP
+          </p>
+        )}
+        {event.registrationType === "TICKETING" && event.priceLabel && (
+          <p className="mt-2 text-[0.75rem] font-semibold uppercase tracking-wider" style={{ color: "var(--color-gold-600)" }}>
+            Registration open
           </p>
         )}
       </div>
