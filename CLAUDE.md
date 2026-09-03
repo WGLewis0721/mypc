@@ -50,7 +50,8 @@ Keep `CI=1` on every Wix CLI command. Don't smoke-test with a dev server unless 
 
 **Deploy size (why the forms/blog code deviates from the shipped vertical):** the Wix deploy
 `app-deployments/.../complete` endpoint inlines every built file as base64 in one JSON body and
-returns **HTTP 413** on a large bundle. Two shipped deps blew it past the limit (~35 MB total):
+returns **HTTP 413** on a large bundle. Two shipped deps blew it past the limit (~35 MB total);
+removing them from the runtime graph brought the bundle to ~2.9 MB:
 - `@wix/auto_sdk_forms_forms` — a generated SDK whose ES bundle is **~15 MB** (zod schemas),
   pulled in by `@wix/forms` for `getForm`. Fix: the 2 form schemas are fetched once by
   `scripts/fetch-forms.mjs` (anon visitor token) into `src/data/forms.raw.json`; `src/wix/forms/forms.ts`
@@ -60,8 +61,15 @@ returns **HTTP 413** on a large bundle. Two shipped deps blew it past the limit 
 - `@wix/ricos` (~5 MB) — the blog rich-text viewer. Fix: `blog/[...slug].astro` renders
   `post.paragraphs` server-side; the `RichContent` island (and `@wix/ricos`) are gone. Rich
   embeds/formatting in post bodies are not rendered.
-`astro.config.mjs` also sets `manualChunks` to split `node_modules` per package (keeps any one
-file small). `@wix/ricos` is still in `package.json` but unused — safe to drop.
+`@wix/ricos` is still in `package.json` but unused — safe to drop.
+
+**Don't add `vite.build.rollupOptions.output.manualChunks` to `astro.config.mjs`.** A custom
+`manualChunks` was tried for the 413 and it silently broke `@wix/astro-wix-hosting-adapter`'s
+runtime env injection (its `server.mjs` calls `setGetEnv(createGetEnv(env))` to feed the Worker
+env into `astro:env/server`) — every released page 500'd with
+`WIX_CLIENT_INSTANCE_ID is missing`. The code cuts above fix the 413 on their own; keep
+`astro.config.mjs` minimal. Also: **never `wix env set` / edit the `WIX_CLIENT_*` vars** — the
+Wix CLI manages them; `wix env pull` retrieves them and the hosting runtime injects them.
 
 ## Environment state (verified 2026-09-02)
 
