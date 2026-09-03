@@ -11,7 +11,10 @@ function PostCard({ post }: { post: PostSummary }) {
           <img
             src={post.coverUrl}
             alt={post.title}
+            width={1200}
+            height={675}
             loading="lazy"
+            onError={(e) => e.currentTarget.parentElement?.remove()}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         </div>

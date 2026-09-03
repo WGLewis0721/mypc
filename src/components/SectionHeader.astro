@@ -20,7 +20,7 @@ const { eyebrow, title, lede, link, onNavy = false, align = "start" } = Astro.pr
       )
     }
     <h2 class="t-h2">{title}</h2>
-    <span class="rule"></span>
+    <span class:list={["rule", { "rule--lg": align !== "center" }]}></span>
     {lede && <p class="sh__lede">{lede}</p>}
   </div>
 
@@ -54,16 +54,18 @@ const { eyebrow, title, lede, link, onNavy = false, align = "start" } = Astro.pr
     margin-inline: auto;
   }
   .sh__head {
-    max-width: 32ch;
+    max-width: 40ch;
+    flex: 1 1 22rem;
   }
   .sh--center .sh__head {
     margin-inline: auto;
+    max-width: 32ch;
   }
   .eyebrow {
     margin-bottom: 0.7rem;
   }
   .rule {
-    margin-top: 1rem;
+    margin-top: 1.1rem;
   }
   .sh__lede {
     margin-top: 1rem;

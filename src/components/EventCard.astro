@@ -30,11 +30,26 @@ const {
 {
   featured ? (
     <article class="ecf">
-      {img && (
-        <div class="ecf__media">
-          <img src={img} alt={title} width="720" height="540" loading="lazy" decoding="async" />
+      <div class="ecf__media">
+        <div class="ecf__media-fallback" aria-hidden="true">
+          <span class="ecf__fb-month">{month}</span>
+          <span class="ecf__fb-day">{day}</span>
+          <svg class="ecf__fb-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.4l2.7 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.1 6.1 20.3l1.2-6.4L2.6 9.1l6.4-.8z" />
+          </svg>
         </div>
-      )}
+        {img && (
+          <img
+            src={img}
+            alt={title}
+            width="720"
+            height="540"
+            loading="lazy"
+            decoding="async"
+            onerror="this.remove()"
+          />
+        )}
+      </div>
       <div class="ecf__body">
         <div class="ecf__head">
           <span class="ecf__date">
@@ -155,12 +170,53 @@ const {
     border-radius: var(--radius-md);
     overflow: hidden;
   }
+  .ecf__media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid var(--color-border-light);
+    overflow: hidden;
+  }
   .ecf__media :global(img) {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     object-fit: cover;
-    border-bottom: 1px solid var(--color-border-light);
+  }
+  /* Shown when the event carries no image (or its image 404s and is removed). */
+  .ecf__media-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    background:
+      radial-gradient(120% 100% at 85% 15%, var(--color-navy-800), var(--color-navy-900) 70%);
+    color: #fff;
+  }
+  .ecf__fb-month {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--color-gold-500);
+  }
+  .ecf__fb-day {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 1.8rem + 3vw, 3.75rem);
+    font-weight: 540;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .ecf__fb-star {
+    position: absolute;
+    right: -8%;
+    bottom: -12%;
+    width: 42%;
+    color: var(--color-gold-500);
+    opacity: 0.08;
   }
   .ecf__body {
     padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);

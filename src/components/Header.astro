@@ -2,7 +2,7 @@
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
 import MobileNav from "./MobileNav.astro";
-import MemberMenu from "./members/MemberMenu";
+import HeaderAccount from "./members/HeaderAccount";
 import { NAV } from "../data/home";
 
 interface Props {
@@ -13,7 +13,9 @@ const { active } = Astro.props;
 
 <header class="hdr" data-hdr>
   <div class="wrap wrap--wide hdr__inner">
-    <Logo sub class="hdr__logo" />
+    <div class="hdr__logo">
+      <Logo sub />
+    </div>
 
     <nav class="hdr__nav" aria-label="Primary">
       <ul>
@@ -35,7 +37,7 @@ const { active } = Astro.props;
 
     <div class="hdr__actions">
       <span class="hdr__member">
-        <MemberMenu client:only="react" />
+        <HeaderAccount client:only="react" />
       </span>
       <a href="/join" class="btn btn--primary hdr__cta">Apply to Join</a>
       <button
@@ -67,20 +69,26 @@ const { active } = Astro.props;
   .hdr[data-scrolled] {
     box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.7);
   }
+  /* The bar spans the browser width with a comfortable fluid gutter — the logo
+     sits near the left edge, the CTA near the right, capped only on ultra-wide. */
   .hdr__inner {
+    max-width: min(100%, 2040px);
+    padding-inline: clamp(1.25rem, 3vw, 3.5rem);
     min-height: var(--header-h);
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: clamp(1rem, 2.6vw, 2.75rem);
   }
   .hdr__logo {
+    display: flex;
+    align-items: center;
     margin-right: auto;
   }
 
   .hdr__nav ul {
     display: flex;
     align-items: center;
-    gap: clamp(1rem, 2.4vw, 2rem);
+    gap: clamp(0.7rem, 1.9vw, 2rem);
   }
   .hdr__link {
     position: relative;
@@ -89,6 +97,7 @@ const { active } = Astro.props;
     font-size: 0.9375rem;
     font-weight: 500;
     letter-spacing: 0.01em;
+    white-space: nowrap;
     color: var(--color-cloud);
     transition: color var(--dur) var(--ease);
   }
@@ -120,39 +129,30 @@ const { active } = Astro.props;
   .hdr__actions {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: clamp(0.5rem, 1.1vw, 0.9rem);
   }
   .hdr__cta {
-    min-height: 42px;
-    padding: 0.6rem 1.1rem;
+    min-height: 40px;
+    padding: 0.6rem 1.15rem;
     white-space: nowrap;
   }
 
-  /* MemberMenu (shipped) styles itself from the @theme tokens for a light ground —
-     re-tone it for the navy header. Specificity beats the Tailwind utility classes. */
-  .hdr__member :global(a),
-  .hdr__member :global(button),
-  .hdr__member :global(span) {
-    color: #fff;
-    font-family: var(--font-sans);
-  }
-  .hdr__member :global(a.bg-primary) {
-    background: var(--color-gold-600);
-    color: var(--color-navy-900);
-    font-weight: 600;
-  }
-  .hdr__member :global(a.bg-primary:hover) {
-    background: var(--color-gold-500);
-  }
-  .hdr__member :global(.bg-secondary) {
-    background: rgb(255 255 255 / 0.14);
-  }
-  .hdr__member :global(.text-muted-foreground) {
-    color: var(--color-cloud);
+  .hdr__member {
+    display: inline-flex;
+    align-items: center;
   }
   @media (max-width: 1023px) {
     .hdr__member {
       display: none;
+    }
+  }
+  /* Tight zone just past the nav breakpoint — trim gaps before anything wraps. */
+  @media (min-width: 1024px) and (max-width: 1180px) {
+    .hdr__nav ul {
+      gap: 0.7rem;
+    }
+    .hdr__inner {
+      gap: 1rem;
     }
   }
   .hdr__burger {

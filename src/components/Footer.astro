@@ -6,6 +6,10 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="ft section--navy-deep">
+  <span class="ft__topline" aria-hidden="true"></span>
+  <svg class="ft__mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2.4l2.7 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.1 6.1 20.3l1.2-6.4L2.6 9.1l6.4-.8z" />
+  </svg>
   <div class="wrap wrap--wide ft__grid">
     <div class="ft__brand">
       <Logo />
@@ -50,8 +54,36 @@ const year = new Date().getFullYear();
 
 <style>
   .ft {
+    position: relative;
     padding-block: clamp(3rem, 2rem + 4vw, 5rem) 0;
     color: #fff;
+    overflow: clip;
+  }
+  .ft__topline {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--color-gold-500) 0 22%,
+      var(--color-red-600) 22% 30%,
+      var(--border-on-navy) 30% 100%
+    );
+  }
+  .ft__mark {
+    position: absolute;
+    right: -2%;
+    top: 8%;
+    width: clamp(140px, 18vw, 260px);
+    color: var(--color-gold-500);
+    opacity: 0.05;
+    pointer-events: none;
+  }
+  .ft__grid,
+  .ft__bar {
+    position: relative;
+    z-index: 1;
   }
   .ft__grid {
     display: grid;

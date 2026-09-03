@@ -37,16 +37,23 @@ const { steps } = Astro.props;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: var(--radius-pill);
     background: var(--color-navy-800);
     border: 1px solid var(--color-gold-600);
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-weight: 540;
     font-variant-numeric: tabular-nums;
     color: var(--color-gold-500);
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+  .step:hover .step__node {
+    border-color: var(--color-gold-500);
+    background: var(--color-navy-700);
   }
   .step__title {
     font-family: var(--font-sans);
@@ -68,8 +75,8 @@ const { steps } = Astro.props;
     .step:not(:last-child)::before {
       content: "";
       position: absolute;
-      left: 23px;
-      top: 48px;
+      left: 25px;
+      top: 52px;
       bottom: -1.5rem;
       width: 1px;
       background: var(--border-on-navy);
@@ -89,9 +96,9 @@ const { steps } = Astro.props;
     .step:not(:last-child)::before {
       content: "";
       position: absolute;
-      left: calc(24px + 1rem);
+      left: calc(26px + 1rem);
       right: -2rem;
-      top: 24px;
+      top: 26px;
       height: 1px;
       background: var(--border-on-navy);
     }

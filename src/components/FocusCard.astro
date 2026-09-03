@@ -2,18 +2,21 @@
 import Icon from "./Icon.astro";
 
 interface Props {
+  n?: number;
   icon: "building" | "users" | "briefcase" | "heart";
   accent?: "navy" | "red";
   title: string;
   body: string;
   href?: string;
 }
-const { icon, accent = "navy", title, body, href = "#" } = Astro.props;
+const { n, icon, accent = "navy", title, body, href = "#" } = Astro.props;
+const num = n != null ? String(n).padStart(2, "0") : null;
 ---
 
 <article class="fc">
+  {num && <span class="fc__n" aria-hidden="true">{num}</span>}
   <span class:list={["fc__glyph", { "fc__glyph--red": accent === "red" }]} aria-hidden="true">
-    <Icon name={icon} size={26} />
+    <Icon name={icon} size={24} />
   </span>
   <h3 class="fc__title">{title}</h3>
   <p class="fc__body">{body}</p>
@@ -24,22 +27,39 @@ const { icon, accent = "navy", title, body, href = "#" } = Astro.props;
 </article>
 
 <style>
-  /* Rule-divided ledger item — no card shell. Dividers drawn by the parent. */
+  /* Charter-article row — no card shell. Dividers drawn by the parent grid. */
   .fc {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.7rem;
-    padding: 0.25rem 0 0.5rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "n glyph"
+      "n title"
+      "n body"
+      "n link";
+    column-gap: 1.1rem;
+    row-gap: 0.55rem;
+    padding: 1.5rem 0 1.75rem;
+  }
+  .fc__n {
+    grid-area: n;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+    font-weight: 520;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--color-gold-600);
+    opacity: 0.5;
   }
   .fc__glyph {
+    grid-area: glyph;
     color: var(--color-navy-900);
-    margin-bottom: 0.35rem;
   }
   .fc__glyph--red {
     color: var(--color-red-600);
   }
   .fc__title {
+    grid-area: title;
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     font-weight: 600;
@@ -48,13 +68,28 @@ const { icon, accent = "navy", title, body, href = "#" } = Astro.props;
     color: var(--color-ink-900);
   }
   .fc__body {
+    grid-area: body;
+    max-width: 46ch;
     color: var(--color-ink-500);
     font-size: 0.9375rem;
     line-height: 1.55;
   }
   .fc__link {
-    margin-top: auto;
-    padding-top: 0.5rem;
+    grid-area: link;
+    margin-top: 0.35rem;
     font-size: 0.75rem;
+  }
+
+  @media (max-width: 560px) {
+    .fc {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "n"
+        "glyph"
+        "title"
+        "body"
+        "link";
+      row-gap: 0.5rem;
+    }
   }
 </style>

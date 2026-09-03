@@ -1,0 +1,80 @@
+---
+/**
+ * Decorative civic linework for navy sections — a large layered star mark plus a
+ * faint sunburst, very low opacity. Adds depth/atmosphere without competing with
+ * content. Purely presentational (aria-hidden). Parent must be position:relative
+ * with overflow:clip.
+ *
+ * pos: which corner the star anchors to.
+ */
+interface Props {
+  pos?: "top-right" | "bottom-left" | "bottom-right" | "top-left";
+  burst?: boolean;
+  class?: string;
+}
+const { pos = "top-right", burst = false, class: cls } = Astro.props;
+const STAR =
+  "M100 6 L123.5 69 L191 71 L138 112 L157 177 L100 138 L43 177 L62 112 L9 71 L76.5 69 Z";
+---
+
+<div class:list={["cfield", `cfield--${pos}`, cls]} aria-hidden="true">
+  {
+    burst && (
+      <svg class="cfield__burst" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+        <g stroke="var(--color-gold-500)" stroke-width="1">
+          {Array.from({ length: 22 }).map((_, i) => {
+            const a = (i / 22) * Math.PI * 2;
+            return (
+              <line x1="200" y1="200" x2={200 + Math.cos(a) * 520} y2={200 + Math.sin(a) * 520} />
+            );
+          })}
+        </g>
+      </svg>
+    )
+  }
+  <svg class="cfield__star" viewBox="0 0 200 200">
+    <path d={STAR} transform="translate(5 4) rotate(9 100 100)" fill="none" stroke="var(--color-navy-700)" stroke-width="2" />
+    <path d={STAR} fill="none" stroke="var(--color-gold-500)" stroke-width="1.5" />
+  </svg>
+</div>
+
+<style>
+  .cfield {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: clip;
+  }
+  .cfield__burst {
+    position: absolute;
+    width: min(48rem, 90%);
+    aspect-ratio: 1;
+    opacity: 0.05;
+  }
+  .cfield__star {
+    position: absolute;
+    width: clamp(220px, 30vw, 460px);
+    aspect-ratio: 1;
+    opacity: 0.06;
+  }
+  .cfield--top-right .cfield__star,
+  .cfield--top-right .cfield__burst {
+    top: -14%;
+    right: -6%;
+  }
+  .cfield--bottom-left .cfield__star,
+  .cfield--bottom-left .cfield__burst {
+    bottom: -16%;
+    left: -8%;
+  }
+  .cfield--bottom-right .cfield__star,
+  .cfield--bottom-right .cfield__burst {
+    bottom: -16%;
+    right: -6%;
+  }
+  .cfield--top-left .cfield__star,
+  .cfield--top-left .cfield__burst {
+    top: -14%;
+    left: -8%;
+  }
+</style>

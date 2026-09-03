@@ -100,7 +100,7 @@
   --space-4xl: 8rem;
 
   --container: 1200px;
-  --container-wide: 1360px;
+  --container-wide: 1520px;
   --container-narrow: 760px;
   --gutter: clamp(1.25rem, 5vw, 3rem);
   --section-y: clamp(3rem, 2rem + 3.5vw, 5.25rem);
@@ -109,10 +109,14 @@
   --border-on-navy: rgb(255 255 255 / 0.14);
 
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 220ms;
-  --dur-slow: 480ms;
+  --dur-slow: 520ms;
 
   --header-h: 68px;
+
+  /* Premium cadence — sections breathe a little more than the base rhythm. */
+  --section-y: clamp(3.5rem, 2.4rem + 4.2vw, 6.5rem);
 }
 
 /* ─── base ─────────────────────────────────────────────────────────────────── */
@@ -191,7 +195,6 @@
   :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
-    border-radius: 1px;
   }
 
   ::selection {
@@ -218,10 +221,10 @@
   }
   .t-h2 {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
-    line-height: 1.12;
+    font-size: clamp(1.9rem, 1.35rem + 2.15vw, 3rem);
+    line-height: 1.08;
     font-weight: 520;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.018em;
   }
   .t-h3 {
     font-family: var(--font-display);
@@ -268,6 +271,25 @@
     background: var(--color-gold-500);
     border: 0;
   }
+  /* Charter rule — a short gold bar leading a hairline that runs to the edge of
+     the header block. Reads more editorial / institutional than a lone tick. */
+  .rule--lg {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--color-gold-500) 0 64px,
+      var(--color-border-light) 64px 100%
+    );
+  }
+  .sh--navy .rule--lg,
+  .section--navy .rule--lg {
+    background: linear-gradient(
+      90deg,
+      var(--color-gold-500) 0 64px,
+      var(--border-on-navy) 64px 100%
+    );
+  }
 
   /* ─── containers + section ──────────────────────────────────────────────── */
   .wrap {
@@ -291,6 +313,11 @@
     color: #fff;
     position: relative;
     overflow: clip;
+  }
+  /* keep real content above any CivicField / decorative layer in the section */
+  .section--navy > .wrap {
+    position: relative;
+    z-index: 1;
   }
   .section--navy-deep {
     background: var(--color-navy-950);
@@ -366,6 +393,108 @@
     width: 100%;
   }
 
+  /* ─── header account control — pill-locked in every state ────────────────── */
+  /* Fixed height + explicit inline-flex box so hover / focus / active / loading /
+     route change never re-shape it. Only background, border, and transform
+     transition — never border-radius, width, height, or padding. */
+  .acct {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .acct__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 40px;
+    padding: 0 1.15rem;
+    border: 1px solid rgb(255 255 255 / 0.5);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+  .acct__btn:hover {
+    background: rgb(255 255 255 / 0.1);
+    border-color: #fff;
+  }
+  .acct__btn:active {
+    transform: translateY(1px);
+  }
+  .acct__skeleton {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 84px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.1);
+  }
+  .acct__me {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color var(--dur) var(--ease);
+  }
+  .acct__me:hover {
+    color: var(--color-gold-300);
+  }
+  .acct__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+  }
+  .acct__avatar--mono {
+    background: rgb(255 255 255 / 0.14);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .acct__name {
+    max-width: 12ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .acct__out {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-cloud);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: color var(--dur) var(--ease);
+  }
+  .acct__out:hover {
+    color: #fff;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .acct__btn {
+      transition: none;
+    }
+    .acct__btn:active {
+      transform: none;
+    }
+  }
+
   /* ─── tertiary arrow link ───────────────────────────────────────────────── */
   .link-arrow {
     display: inline-flex;
@@ -417,17 +546,17 @@
       0 14px 30px -16px rgb(16 33 63 / 0.16);
   }
 
-  /* ─── seam divider — thin gold/red civic band between sections ──────────── */
+  /* ─── seam divider — angled gold/red civic band between sections ────────── */
   .seam {
-    height: 6px;
+    height: 14px;
     border: 0;
     margin: 0;
     background: linear-gradient(
       90deg,
-      var(--color-gold-500) 0 60%,
-      var(--color-red-600) 60% 100%
+      var(--color-gold-500) 0 58%,
+      var(--color-red-600) 58% 100%
     );
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 60%);
   }
 }
 

@@ -79,6 +79,7 @@ const alt = `${role}, Mayor’s Young Professional Council`;
     overflow: hidden;
     border: 1px solid var(--border-on-navy);
     background: var(--color-navy-800);
+    transition: border-color var(--dur) var(--ease);
   }
   .lc__photo :global(img) {
     position: absolute;
@@ -86,14 +87,29 @@ const alt = `${role}, Mayor’s Young Professional Council`;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .lc:hover .lc__photo {
+    border-color: var(--color-gold-500);
+  }
+  .lc:hover .lc__photo :global(img) {
+    transform: scale(1.045);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lc__photo :global(img) {
+      transition: none;
+    }
+    .lc:hover .lc__photo :global(img) {
+      transform: none;
+    }
   }
   .lc__scrim {
     position: absolute;
-    inset: 38% 0 0 0;
+    inset: 52% 0 0 0;
     background: linear-gradient(
       to top,
-      var(--color-navy-950) 6%,
-      rgb(6 18 42 / 0.6) 45%,
+      rgb(6 16 29 / 0.92) 8%,
+      rgb(6 16 29 / 0.55) 48%,
       transparent 100%
     );
   }

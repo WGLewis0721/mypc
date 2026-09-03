@@ -6,16 +6,19 @@ import type { EventSummary } from "../../wix/events/types";
 function EventCard({ event }: { event: EventSummary }) {
   return (
     <a href={`/events/${event.slug}`} className="card group block overflow-hidden no-underline">
-      <div className="relative aspect-[3/2] overflow-hidden" style={{ background: "var(--color-navy-800)" }}>
-        {event.imageUrl && (
+      {event.imageUrl && (
+        <div className="relative aspect-[3/2] overflow-hidden" style={{ background: "var(--color-navy-800)" }}>
           <img
             src={event.imageUrl}
             alt={event.title}
+            width={1200}
+            height={800}
             loading="lazy"
+            onError={(e) => e.currentTarget.parentElement?.remove()}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
-        )}
-      </div>
+        </div>
+      )}
       <div className="p-5">
         {event.dateLabel && <p className="eyebrow">{event.dateLabel}</p>}
         <h3 className="t-h3 mt-1.5" style={{ color: "var(--color-ink-900)" }}>{event.title}</h3>
