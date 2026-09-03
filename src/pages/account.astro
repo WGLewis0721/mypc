@@ -1,0 +1,17 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import AccountView from "../components/members/AccountView";
+import RequireAuth from "../components/members/RequireAuth";
+---
+
+<SiteLayout title="My account · MYPC" active="join">
+  <section class="section section--white">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow">Member area</p>
+      <h1 class="t-display-l" style="margin-top:.5rem">My account</h1>
+      <div style="margin-top:2rem">
+        <RequireAuth client:only="react"><AccountView /></RequireAuth>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

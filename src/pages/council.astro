@@ -1,0 +1,162 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import LeadershipCard from "../components/LeadershipCard.astro";
+import StatBar from "../components/StatBar.astro";
+import Icon from "../components/Icon.astro";
+import { LEADERSHIP, STATS } from "../data/home";
+---
+
+<SiteLayout
+  title="The Council · MYPC"
+  description="The leadership and membership of the Mayor's Young Professional Council."
+  active="council"
+>
+  <!-- Leadership -->
+  <section class="section section--navy">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader
+          onNavy
+          eyebrow="Leadership"
+          title="Who leads the Council"
+          lede="An elected slate of officers guides the Council's committees and represents members to the City."
+        />
+      </div>
+      <div class="reveal" style="margin-bottom:clamp(2rem,1.5rem+2vw,3rem)">
+        <StatBar stats={STATS} tone="bare" />
+      </div>
+      <div class="leaders reveal">
+        <LeadershipCard featured {...LEADERSHIP.featured} />
+        <div class="leaders__row">
+          {LEADERSHIP.members.map((m) => <LeadershipCard {...m} />)}
+        </div>
+      </div>
+      <p class="council__todo">
+        <Icon name="star" size={12} />
+        Concept build — portraits are generated stand-ins and figures are illustrative.
+        TODO: client to supply the confirmed roster, real headshots and one-line bios.
+      </p>
+    </div>
+  </section>
+
+  <!-- Membership / member area -->
+  <section class="section section--paper">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader
+          title="The membership"
+          lede="Members are young professionals from across Montgomery — public and private sector, nonprofit, small business, and the trades."
+        />
+      </div>
+      <div class="council__grid reveal">
+        <div class="council__cell">
+          <Icon name="users" size={22} />
+          <h3 class="t-h3">A working body, not a mailing list</h3>
+          <p>Members join a committee and show up. The Council keeps its size deliberate so every member has a real role.</p>
+        </div>
+        <div class="council__cell">
+          <Icon name="briefcase" size={22} />
+          <h3 class="t-h3">A path to appointed service</h3>
+          <p>The Council prepares and recommends members for seats on city boards and commissions.</p>
+        </div>
+        <div class="council__cell">
+          <Icon name="calendar" size={22} />
+          <h3 class="t-h3">Year-round programming</h3>
+          <p>Monthly general sessions, committee work, service days, and networking — see the <a href="/events">events calendar</a>.</p>
+        </div>
+      </div>
+
+      <div class="council__cta reveal">
+        <div>
+          <p class="t-h3" style="color:var(--color-ink-900)">Already a member?</p>
+          <p style="color:var(--color-ink-500);margin-top:.35rem">Sign in for the member area.</p>
+        </div>
+        <div class="council__cta-actions">
+          <a href="/login" class="btn btn--secondary-light">Member login</a>
+          <a href="/join" class="btn btn--primary">Apply to join</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .leaders {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+  }
+  .leaders__row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  @media (min-width: 1024px) {
+    .leaders {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+      align-items: center;
+    }
+    .leaders__row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .council__todo {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-ink-on-navy-muted, #c4cee2);
+    max-width: 60ch;
+  }
+  .council__todo :global(svg) {
+    color: var(--color-gold-500);
+    flex: none;
+    margin-top: 0.15rem;
+  }
+  .council__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .council__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+  .council__cell :global(svg) {
+    color: var(--color-navy-900);
+  }
+  .council__cell .t-h3 {
+    margin-top: 0.75rem;
+    color: var(--color-ink-900);
+  }
+  .council__cell p {
+    margin-top: 0.4rem;
+    color: var(--color-ink-500);
+    line-height: 1.6;
+    font-size: 0.9375rem;
+  }
+  .council__cell a {
+    color: var(--color-gold-600);
+    text-decoration: underline;
+  }
+  .council__cta {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    padding: clamp(1.5rem, 1.2rem + 2vw, 2.25rem);
+    background: var(--color-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .council__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

@@ -44,6 +44,8 @@ Because the repo already exists (not an empty dir), this is a **connect** run, n
 
 Keep `CI=1` on every Wix CLI command. Don't smoke-test with a dev server unless asked — correctness comes from the shipped code and surfaces at build/release.
 
+**Build memory:** this machine has 8 GB RAM and the client bundle is large (`WixForm` chunk ≈ 11 MB — `@wix/forms` + `@wix/ricos`), so `astro build` OOMs under Node's default heap. `npm run build` / `npm run release` are wrapped with `cross-env NODE_OPTIONS=--max-old-space-size=4096`; run the Wix CLI through those scripts, not bare `wix build`. Follow-up: trim the forms/ricos client graph (manualChunks / lazy ricos) to bring the bundle down.
+
 ## Environment state (verified 2026-09-02)
 
 | Piece | State |
@@ -60,9 +62,20 @@ Keep `CI=1` on every Wix CLI command. Don't smoke-test with a dev server unless 
 - **Wix MCP server** (`plugin:wix:wix-mcp` → `mcp.wix.com/mcp`) — needs auth. Run `/mcp` in an interactive Claude Code session and complete the OAuth flow. Needed for site management / MCP-driven Wix operations; the CLI build flow above does **not** require it.
 - **GitHub CLI** (`gh`) — not authenticated. Run `gh auth login` if PR/issue commands are wanted. Plain `git push` over HTTPS already works via the OS credential store.
 
-## Open decisions before the build
+## Decisions made
 
-- The brief: what the demo represents, who it's for, the primary conversion action, brand character.
-- Which Wix vertical(s).
-- Brand name + visual direction (`DESIGN.md`).
+- **Concept:** the Mayor's Young Professional Council (MYPC) — a city-sponsored council of young
+  professionals in Montgomery, AL. Primary CTA: **apply to join**. Brand character: civic, editorial,
+  premium-but-warm.
+- **Verticals:** blog (news), events (RSVP/tickets), forms (join + contact applications), members
+  (login / account). Storefront/bookings/etc. not used.
+- **Brand / visual direction:** the MYPC brandkit (`brief/ChatGPT Image Sep 2, 2026, 10_52_11 PM (1).png`)
+  — applied in `DESIGN.md` + `global.css`. Playfair Display / Montserrat / Great Vibes; MYPC-navy +
+  gold + civic-red palette; layered-star logo mark.
+- **Contact:** `info@mypcmgm.org` (from the brandkit). Roster names/photos are concept stand-ins —
+  `TODO: client to supply` the confirmed slate + real headshots.
+
+## Open decisions
+
 - Custom domain — later, post-release.
+- Real roster, real stats, City-of-Montgomery partnership wording + logo rights — client to supply.

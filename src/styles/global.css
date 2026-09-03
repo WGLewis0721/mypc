@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* Self-hosted variable fonts (latin subset, Fontsource files). Preloaded in Layout. */
+/* Self-hosted fonts (latin subset, Fontsource files). Playfair + Montserrat preloaded in Layout.
+   Brand system: Playfair Display (headline serif) · Montserrat (body / UI) · Great Vibes (script accent). */
 @font-face {
   font-family: "Playfair Display";
   src: url("/fonts/playfair-display-latin-wght-normal.woff2") format("woff2");
@@ -9,53 +10,80 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "Libre Franklin";
-  src: url("/fonts/libre-franklin-latin-wght-normal.woff2") format("woff2");
+  font-family: "Montserrat Variable";
+  src: url("/fonts/montserrat-latin-wght-normal.woff2") format("woff2");
   font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Great Vibes";
+  src: url("/fonts/great-vibes-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
    MYPC global design system
-   Source of truth: DESIGN.md. Civic · editorial · leadership-oriented.
-   Deep navy foundation · warm gold accent · restrained red · editorial serif.
-   Edit tokens here; components read them via var() and a few utility classes.
+   Source of truth: DESIGN.md + the MYPC brandkit. Civic · editorial · leadership.
+   MYPC Navy foundation · Royal Blue support · Gold emphasis · Civic Red spice ·
+   editorial serif headline. Edit tokens here; components read them via var().
    ──────────────────────────────────────────────────────────────────────────── */
 
 @theme {
-  /* Brand palette — navy foundation */
-  --color-navy-950: #06122a;
-  --color-navy-900: #0a1a38;
-  --color-navy-800: #12264c;
-  --color-navy-700: #1e3a6b;
+  /* Brand palette — MYPC Navy foundation (brandkit #0B1D3A) */
+  --color-navy-950: #06101d; /* demo bar, deepest ground */
+  --color-navy-900: #0b1d3a; /* MYPC Navy — primary foundation */
+  --color-navy-800: #12274d; /* raised panels / form box on navy */
+  --color-navy-700: #1d3a63; /* dividers / hover on navy */
 
-  /* Gold — the single voice of emphasis */
-  --color-gold-600: #a97c2e;
-  --color-gold-500: #c79a45;
-  --color-gold-300: #e4c987;
+  /* Royal Blue — brandkit support accent (#163A8C) */
+  --color-royal: #163a8c;
+  --color-royal-700: #12306f;
 
-  /* Red — spice, never a surface */
-  --color-red-600: #9e2a2b;
-  --color-red-500: #b23a34;
+  /* Gold — the single voice of emphasis (brandkit accent #D4AF37) */
+  --color-gold-600: #8a6d1a; /* gold TEXT on light — eyebrows, arrow links (AA ~5:1) */
+  --color-gold-500: #d4af37; /* accent gold — brandkit value: rules, on-navy, button fill */
+  --color-gold-400: #e3c360; /* button hover / lift */
+  --color-gold-300: #ecd79b; /* small gold detail on navy */
 
-  /* Light grounds + ink */
-  --color-paper: #f7f3ea;
+  /* Civic Red — spice, never a surface (brandkit #B1121B) */
+  --color-red-600: #b1121b;
+  --color-red-500: #cc2b2b;
+
+  /* Light grounds + ink (brandkit Light Gray #F5F6F8, Charcoal #1F2630) */
+  --color-paper: #f5f6f8; /* cool off-white — alternating light sections */
   --color-white: #ffffff;
-  --color-ink-900: #16213c;
-  --color-ink-500: #5b6472;
-  --color-cloud: #c4cee2; /* muted text on navy */
-  --color-border-light: #e6e1d6;
+  --color-charcoal: #1f2630;
+  --color-ink-900: #1f2630; /* primary text on light — brandkit Charcoal */
+  --color-ink-500: #5a6472; /* muted text on light */
+  --color-cloud: #c3cee2; /* muted text on navy */
+  --color-border-light: #e4e7ec;
 
-  /* Type families — self-hosted (see @font-face above), preloaded in Layout */
+  /* Type families — self-hosted (see @font-face above); Playfair + Montserrat preloaded in Layout */
   --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-sans: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;
+  --font-sans: "Montserrat Variable", "Montserrat", "Segoe UI", Arial, sans-serif;
+  --font-script: "Great Vibes", "Snell Roundhand", "Segoe Script", cursive;
 
   /* Radii — institutional = mostly square */
   --radius-sm: 2px;
   --radius-md: 4px;
   --radius-lg: 8px;
   --radius-pill: 999px;
+
+  /* Wix Headless shipped components style themselves from THIS token family via Tailwind
+     utilities (bg-primary, text-foreground, border-border, bg-secondary,
+     text-muted-foreground…). Mapped onto the civic palette so seeded surfaces —
+     events, blog, forms, account — render on-brand without editing shipped markup. */
+  --color-background: #ffffff;
+  --color-foreground: #1f2630;
+  --color-primary: #0b1d3a;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #eef0f4;
+  --color-secondary-foreground: #1f2630;
+  --color-muted-foreground: #5a6472;
+  --color-border: #dfe3e9;
 }
 
 /* Non-utility tokens: spacing rhythm, layout, motion */
@@ -206,6 +234,15 @@
     font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
     line-height: 1.6;
   }
+  /* Script accent — Great Vibes. Rationed: hero flourish + one or two premium moments only. */
+  .t-script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: var(--color-gold-500);
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+  }
   .t-meta {
     font-size: 0.8125rem;
     line-height: 1.4;
@@ -295,11 +332,11 @@
     transform: translateY(0);
   }
   .btn--primary {
-    background: var(--color-gold-600);
+    background: var(--color-gold-500);
     color: var(--color-navy-900);
   }
   .btn--primary:hover {
-    background: var(--color-gold-500);
+    background: var(--color-gold-400);
     transform: translateY(-1px);
   }
   .btn--lg {
@@ -409,6 +446,22 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* ─── Wix Ricos blog-body viewer — align to civic ink + gold links ───────────── */
+.ricos-content,
+.ricos-content p,
+.ricos-content li,
+.ricos-content h1,
+.ricos-content h2,
+.ricos-content h3,
+.ricos-content h4,
+.ricos-content blockquote {
+  color: var(--color-ink-900);
+}
+.ricos-content a {
+  color: var(--color-gold-600);
+  text-decoration: underline;
 }
 
 /* ─── reduced motion ──────────────────────────────────────────────────────── */

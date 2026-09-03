@@ -1,0 +1,37 @@
+---
+// News index — data fetched SERVER-SIDE (SEO) and handed to the island as DTO props.
+// Frontmatter fetch pattern kept from the shipped page; presentation is MYPC's.
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PostGrid from "../components/blog/PostGrid";
+import SectionHeader from "../components/SectionHeader.astro";
+import { fetchPosts } from "../wix/blog/posts";
+import { fetchBlogCategories, fetchBlogTags } from "../wix/blog/taxonomy";
+import type { BlogCategory, BlogTag, PostPage } from "../wix/blog/types";
+
+let page: PostPage = { posts: [], nextCursor: null };
+let categories: BlogCategory[] = [];
+let tags: BlogTag[] = [];
+try {
+  [page, categories, tags] = await Promise.all([fetchPosts(), fetchBlogCategories(), fetchBlogTags()]);
+} catch {
+  // An unguarded SSR throw truncates the response mid-stream; the island renders the
+  // empty state instead.
+}
+---
+
+<SiteLayout title="News · MYPC" description="Recaps, announcements and spotlights from the Mayor's Young Professional Council." active="news">
+  <section class="section section--white">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader
+          eyebrow="From the Council"
+          title="News, stories & spotlights"
+          lede="What the Council is working on between meetings — recaps, announcements, and the people doing the work."
+        />
+      </div>
+      <div class="reveal">
+        <PostGrid client:load initialPage={page} initialCategories={categories} initialTags={tags} />
+      </div>
+    </div>
+  </section>
+</SiteLayout>

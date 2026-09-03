@@ -1,0 +1,68 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import MembershipSteps from "../components/MembershipSteps.astro";
+import WixForm from "../components/forms/WixForm";
+import { MEMBERSHIP } from "../data/home";
+import { getForm } from "../wix/forms/forms";
+import type { FormDto } from "../wix/forms/types";
+
+const APPLICATION_FORM_ID = "d3055129-4337-4ba7-bd92-63c68e06fe94";
+let form: FormDto | null = null;
+try {
+  form = await getForm(APPLICATION_FORM_ID);
+} catch {
+  // fall through to the honest "form unavailable" state
+}
+---
+
+<SiteLayout
+  title="Join the Council · MYPC"
+  description="How to become a member of the Mayor's Young Professional Council, and the online application."
+  active="join"
+>
+  <!-- Intro + funnel on navy -->
+  <section class="section section--navy">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader onNavy eyebrow="Membership" title={MEMBERSHIP.title} lede={MEMBERSHIP.lede} />
+      </div>
+      <div class="reveal">
+        <MembershipSteps steps={MEMBERSHIP.steps} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Application form on paper -->
+  <section class="section section--paper">
+    <div class="wrap wrap--narrow">
+      <div class="reveal">
+        <SectionHeader
+          title="Membership application"
+          lede="Open to young professionals who live or work in Montgomery. A few sentences on why you want to serve is plenty — we read every one."
+        />
+      </div>
+      <div class="reveal">
+        {
+          form ? (
+            <WixForm
+              client:load
+              initialForm={form}
+              successTitle="Application received"
+              successBody="Thanks for applying. The Membership Committee reviews applications on a rolling basis and will be in touch about next steps, including an interview."
+            />
+          ) : (
+            <p style="color:var(--color-ink-500)">
+              The application form is temporarily unavailable. Please try again shortly, or reach us
+              from the <a href="/about" style="color:var(--color-gold-600);text-decoration:underline">contact form</a>.
+            </p>
+          )
+        }
+        <p style="margin-top:1.5rem;font-size:.8125rem;color:var(--color-ink-500)">
+          Demo note: this is a concept site. Submissions go to a Wix Forms inbox on the demo
+          account and are not monitored.
+        </p>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

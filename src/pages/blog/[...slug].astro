@@ -1,0 +1,170 @@
+---
+// Post page.
+//
+// This is a Wix ITEM PAGE: the wixMetadata export + <SEO.Tags> below let the site owner edit
+// this page's title/description/OG in the dashboard and register the route in the sitemap.
+// SEO pieces, the [...slug] rest param, and frontmatter are kept verbatim from the shipped
+// page; only the template is restyled. The body island stays client:only (ricos breaks SSR).
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import RichContent from "../../components/blog/RichContent";
+import { fetchPostBySlug } from "../../wix/blog/posts";
+import { fetchBlogCategories, fetchBlogTags } from "../../wix/blog/taxonomy";
+import type { BlogCategory, BlogTag } from "../../wix/blog/types";
+import { WIX_APPS } from "@wix/essentials";
+import { SEO } from "@wix/seo/components";
+import { loadSEOTagsServiceConfig } from "@wix/seo/services";
+import { seoTags } from "@wix/seo";
+
+export const wixMetadata = {
+  appDefId: WIX_APPS.blogs.id,
+  pageIdentifier: WIX_APPS.blogs.postPageMetadata.pageIdentifier,
+  identifiers: {
+    slug: WIX_APPS.blogs.postPageMetadata.identifiers.slug,
+  },
+};
+
+const slug = Astro.params.slug;
+if (!slug) {
+  return new Response(null, { status: 404 });
+}
+
+// Behind Wix's proxy the request URL is internal — the real public page URL arrives on
+// x-wix-forwarded-url; the SEO service needs the public one.
+const forwardedUrl = Astro.request.headers.get("x-wix-forwarded-url");
+const pageUrl =
+  forwardedUrl && URL.canParse(forwardedUrl) && /^https?:$/.test(new URL(forwardedUrl).protocol)
+    ? forwardedUrl
+    : Astro.url.href;
+
+let post = null;
+let allCategories: BlogCategory[] = [];
+let allTags: BlogTag[] = [];
+let seoTagsServiceConfig = null;
+try {
+  [post, allCategories, allTags, seoTagsServiceConfig] = await Promise.all([
+    fetchPostBySlug(slug),
+    fetchBlogCategories(),
+    fetchBlogTags(),
+    loadSEOTagsServiceConfig({
+      pageUrl,
+      itemType: seoTags.ItemType.BLOG_POST,
+      itemData: { slug },
+    }).catch(() => null),
+  ]);
+} catch {
+  // Guarded: an unhandled SSR throw truncates the response mid-stream.
+}
+
+if (!post) {
+  return new Response(null, { status: 404 });
+}
+
+const postCategories = allCategories.filter((c) => post!.categoryIds.includes(c.id));
+const postTags = allTags.filter((t) => post!.tagIds.includes(t.id));
+---
+
+<SiteLayout title={`${post.title} · MYPC`} description={post.excerpt} active="news">
+  <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
+
+  <section class="section section--white">
+    <div class="wrap wrap--narrow">
+      <a href="/blog" class="link-arrow">
+        <span style="transform:scaleX(-1);display:inline-block">→</span>
+        <span>All news</span>
+      </a>
+
+      <article style="margin-top:1.5rem">
+        {postCategories.length > 0 && (
+          <p class="eyebrow">{postCategories.map((c) => c.label).join(" · ")}</p>
+        )}
+        <h1 class="t-display-l" style="margin-top:.5rem">{post.title}</h1>
+        <p class="t-meta" style="margin-top:.75rem;color:var(--color-ink-500)">
+          {post.dateLabel && <time datetime={post.dateISO}>{post.dateLabel}</time>}
+          {post.dateLabel && post.minutesToRead > 0 ? " · " : ""}
+          {post.minutesToRead > 0 ? `${post.minutesToRead} min read` : ""}
+        </p>
+        {post.coverUrl && (
+          <div class="post__cover">
+            <img src={post.coverUrl} alt={post.title} width="920" height="518" />
+          </div>
+        )}
+        <div class="post__body">
+          <RichContent client:only="react" content={post.richContent} fallbackParagraphs={post.paragraphs} />
+        </div>
+        {postTags.length > 0 && (
+          <div class="post__tags">
+            {postTags.map((t) => (
+              <span class="post__tag">{t.label}</span>
+            ))}
+          </div>
+        )}
+      </article>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .post__cover {
+    margin-top: 1.75rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border-light);
+  }
+  .post__cover :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .post__body {
+    margin-top: 2rem;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink-900);
+  }
+  .post__body :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin: 2rem 0 0.75rem;
+  }
+  .post__body :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin: 1.75rem 0 0.5rem;
+  }
+  .post__body :global(p) {
+    margin: 1rem 0;
+  }
+  .post__body :global(ul),
+  .post__body :global(ol) {
+    margin: 1rem 0;
+    padding-left: 1.4rem;
+    list-style: revert;
+  }
+  .post__body :global(li) {
+    margin: 0.35rem 0;
+  }
+  .post__body :global(blockquote) {
+    margin: 1.5rem 0;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--color-gold-500);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-ink-900);
+  }
+  .post__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+  }
+  .post__tag {
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-ink-500);
+  }
+</style>

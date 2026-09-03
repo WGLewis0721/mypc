@@ -1,0 +1,92 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  stats: readonly { icon: string; value: string; label: string }[];
+  /** "navy" sits on a light section as an inset panel; "bare" for use already on navy. */
+  tone?: "navy" | "bare";
+}
+const { stats, tone = "navy" } = Astro.props;
+---
+
+<dl class:list={["statbar", `statbar--${tone}`]}>
+  {
+    stats.map((s) => (
+      <div class="statbar__item">
+        <span class="statbar__icon" aria-hidden="true">
+          <Icon name={s.icon as any} size={20} />
+        </span>
+        <div>
+          <dd class="statbar__value">{s.value}</dd>
+          <dt class="statbar__label">{s.label}</dt>
+        </div>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .statbar {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+  }
+  .statbar--navy {
+    background: var(--color-navy-900);
+    border: 1px solid var(--border-on-navy);
+    border-radius: var(--radius-md);
+    padding: clamp(1.25rem, 1rem + 1.5vw, 1.75rem) clamp(1.25rem, 1rem + 2vw, 2.25rem);
+  }
+  .statbar__item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 0;
+  }
+  .statbar__item + .statbar__item {
+    border-top: 1px solid var(--border-on-navy);
+  }
+  .statbar__icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: rgb(212 175 55 / 0.12);
+    color: var(--color-gold-500);
+  }
+  .statbar__value {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.125rem);
+    font-weight: 560;
+    line-height: 1;
+    color: #fff;
+  }
+  .statbar__label {
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-cloud);
+  }
+
+  @media (min-width: 720px) {
+    .statbar {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      align-items: center;
+    }
+    .statbar__item {
+      padding: 0.25rem 0;
+    }
+    .statbar__item + .statbar__item {
+      border-top: 0;
+      border-left: 1px solid var(--border-on-navy);
+      padding-left: clamp(1.25rem, 3vw, 2.5rem);
+    }
+  }
+</style>

@@ -48,9 +48,12 @@ const {
       rel="preload"
       as="font"
       type="font/woff2"
-      href="/fonts/libre-franklin-latin-wght-normal.woff2"
+      href="/fonts/montserrat-latin-wght-normal.woff2"
       crossorigin
     />
+
+    <!-- Wix item pages (events/[slug], blog/[...slug]) forward owner-editable <SEO.Tags> here -->
+    <slot name="head" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

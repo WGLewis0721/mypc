@@ -24,26 +24,23 @@ Shared art direction for all generated photos:
 | `portrait-2.webp` | Leadership row, slot 2 (Policy Chair) | Same | single person, different again, same backdrop + grade | 4:5 | 4:5 | lower third under scrim | same grade | Higgsfield | webp | ≤ 65 KB | "Policy Chair of the Council" |
 | `event-featured.webp` | Events section, featured event card | Make the featured event read as a real gathering | 4–6 people at an evening networking mixer, warm interior light, candid | 4:3 | 4:3 | top-left clear for the date chip | warm light against the navy date chip | Higgsfield | webp | ≤ 120 KB | "Guests at a Council member mixer" |
 
-Not generated this iteration (kept as `Placeholder`, client to supply):
-- Leadership row slots 3–4 (Projects Co-Chair, Secretary) — card design is proven by slots 1–2.
-- Community/social story image — slot is designed; real story + image is client content.
-- Any event photo beyond the featured one — compact event rows are text-only by design.
+Still `Placeholder` (client to supply): community/social story image; any event photo beyond the
+featured one (compact event rows are text-only by design).
 
 Decorative (no generation): sunburst linework, Alabama State Capitol dome silhouette,
-5-point civic star — all inline SVG in `Hero.astro` / `Icon.astro` / `Logo.astro`.
+layered 5-point civic star — all inline SVG in `Hero.astro` / `Icon.astro` / `Logo.astro`.
 
 ---
 
-## Sourcing note (this iteration)
+## Sourcing note (brandkit iteration — 2026-09-02)
 
-Bespoke generation was unavailable: **Higgsfield** is on the free plan and returns
-`job_minimum_basic_plan_required`; **`KIE_API_KEY`** is unset. Per the website-build
-fallback chain, the hero uses **licensed sourced imagery** instead.
+The client supplied a **brandkit** (`brief/ChatGPT Image Sep 2, 2026, 10_52_11 PM (1).png`) and a
+set of **studio headshots** (`brief/ChatGPT Image Sep 2, 2026, 10_55_*.png`). Bespoke generation
+(Higgsfield / Kie) was not needed this pass.
 
-| File | Source | License | Attribution (for site credits) |
+| File(s) | Source | Treatment | Notes |
 |---|---|---|---|
-| `public/img/hero-capitol.webp` | Flickr photo id `32495962667` ("West Front of the Alabama State Capitol, Montgomery, AL"), via Openverse; cropped, desaturated, navy grade baked in | CC BY 2.0 | **TODO: confirm photographer + exact credit line from the Flickr photo page before production.** CC BY 2.0 requires attribution. |
+| `public/img/leadership/{president,vicepresident,policy,marketing,events}.webp` | Supplied headshots (transparent-bg cutouts) | `sharp`: 4:5 cover crop (top-anchored), flattened onto MYPC Navy `#0B1D3A`, webp q74 — 17–28 KB each | Generated stand-ins for the concept build. Names from the brandkit where shown (Morgan Jackson · President, Morgan Clausell · Marketing Chair), else illustrative. Visible note on `/council`. **TODO: client to supply the confirmed roster + real headshots.** |
+| `public/img/hero-capitol.webp` | Flickr photo id `32495962667` ("West Front of the Alabama State Capitol, Montgomery, AL"), via Openverse; cropped, navy grade baked in | — | CC BY 2.0. **TODO: confirm photographer + exact credit line before production.** |
 
-Portraits and the event photo remain labelled `Placeholder` slots (`TODO: client to
-supply`). Real council-member photography is client-supplied by necessity; stock faces
-labelled with council roles would misrepresent real people, which the POC rules forbid.
+The reproducible portrait step is `.gen/portraits.mjs` (git-ignored).

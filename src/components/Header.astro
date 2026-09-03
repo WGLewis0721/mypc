@@ -2,6 +2,7 @@
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
 import MobileNav from "./MobileNav.astro";
+import MemberMenu from "./members/MemberMenu";
 import { NAV } from "../data/home";
 
 interface Props {
@@ -33,6 +34,9 @@ const { active } = Astro.props;
     </nav>
 
     <div class="hdr__actions">
+      <span class="hdr__member">
+        <MemberMenu client:only="react" />
+      </span>
       <a href="/donate" class="btn btn--primary hdr__donate">Donate</a>
       <button
         type="button"
@@ -121,6 +125,34 @@ const { active } = Astro.props;
   .hdr__donate {
     min-height: 42px;
     padding: 0.6rem 1.1rem;
+  }
+
+  /* MemberMenu (shipped) styles itself from the @theme tokens for a light ground —
+     re-tone it for the navy header. Specificity beats the Tailwind utility classes. */
+  .hdr__member :global(a),
+  .hdr__member :global(button),
+  .hdr__member :global(span) {
+    color: #fff;
+    font-family: var(--font-sans);
+  }
+  .hdr__member :global(a.bg-primary) {
+    background: var(--color-gold-600);
+    color: var(--color-navy-900);
+    font-weight: 600;
+  }
+  .hdr__member :global(a.bg-primary:hover) {
+    background: var(--color-gold-500);
+  }
+  .hdr__member :global(.bg-secondary) {
+    background: rgb(255 255 255 / 0.14);
+  }
+  .hdr__member :global(.text-muted-foreground) {
+    color: var(--color-cloud);
+  }
+  @media (max-width: 1023px) {
+    .hdr__member {
+      display: none;
+    }
   }
   .hdr__burger {
     display: none;

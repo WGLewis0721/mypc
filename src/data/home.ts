@@ -7,20 +7,29 @@
 
 export const NAV = [
   { key: "home", label: "Home", href: "/" },
-  { key: "council", label: "Council", href: "/#leadership" },
-  { key: "initiatives", label: "Initiatives", href: "/#focus" },
-  { key: "events", label: "Events", href: "/#events" },
-  { key: "join", label: "Join", href: "/#join" },
-  { key: "about", label: "About", href: "/#about" },
+  { key: "council", label: "Council", href: "/council" },
+  { key: "events", label: "Events", href: "/events" },
+  { key: "news", label: "News", href: "/blog" },
+  { key: "join", label: "Join", href: "/join" },
+  { key: "about", label: "About", href: "/about" },
 ] as const;
 
 export const HERO = {
-  eyebrow: "The Next Generation of",
+  // "Connect. Collaborate. Cultivate." + city line are the MYPC brandkit tagline / statement.
+  script: "The next generation of",
   title: ["Montgomery", "Leadership"],
-  lede: "Connecting young professionals. Collaborating on impactful initiatives. Cultivating leaders. Serving our city.",
+  tagline: ["Connect.", "Collaborate.", "Cultivate."],
+  lede: "A city-sponsored council building the next generation of civic leaders who drive change, strengthen community, and serve Montgomery.",
   primary: { label: "Explore MYPC", href: "#focus" },
   secondary: { label: "Upcoming Events", href: "#events" },
 };
+
+/** Illustrative figures for the concept build (brandkit stat-card style). TODO: client to supply real numbers. */
+export const STATS = [
+  { icon: "users", value: "100+", label: "Members" },
+  { icon: "briefcase", value: "25+", label: "Projects" },
+  { icon: "star", value: "10K+", label: "Community impact" },
+] as const;
 
 export const FOCUS = {
   title: "Four ways we serve the city",
@@ -56,19 +65,21 @@ export const FOCUS = {
 export const LEADERSHIP = {
   eyebrow: "Featured Leadership",
   title: "Meet the Council",
-  viewAll: { label: "View all Council", href: "/#leadership" },
-  // Fictional placeholders. Replace with the client-supplied roster.
+  viewAll: { label: "View all Council", href: "/council" },
+  // Concept build: portraits are generated placeholders; names from the MYPC brandkit where shown,
+  // otherwise illustrative. TODO: client to supply the confirmed roster, bios, and real headshots.
   featured: {
-    name: "Council Member (TBD)",
-    role: "President",
+    name: "Morgan Jackson",
+    role: "President · 2026–2027",
+    img: "/img/leadership/president.webp",
     blurb:
-      "TODO: one-line bio from the client. The featured seat carries a short introduction to the Council’s direction for the year.",
+      "“Our charge is simple — connect this generation to the work of the city, then give them a real seat at the table. This year we’re focused on housing, workforce, and getting more members appointed to boards.”",
   },
   members: [
-    { name: "Council Member (TBD)", role: "Vice President" },
-    { name: "Council Member (TBD)", role: "Policy Chair" },
-    { name: "Council Member (TBD)", role: "Projects Co-Chair" },
-    { name: "Council Member (TBD)", role: "Secretary" },
+    { name: "Marcus Ellison", role: "Vice President", img: "/img/leadership/vicepresident.webp" },
+    { name: "Danielle Carter", role: "Policy Chair", img: "/img/leadership/policy.webp" },
+    { name: "Morgan Clausell", role: "Marketing Chair", img: "/img/leadership/marketing.webp" },
+    { name: "Andre Whitfield", role: "Events Chair", img: "/img/leadership/events.webp" },
   ],
 };
 
@@ -113,7 +124,7 @@ export const MEMBERSHIP = {
     { n: 3, title: "Interview", body: "Meet with the Membership Committee." },
     { n: 4, title: "Get Connected", body: "Join the cohort and start serving with MYPC." },
   ],
-  cta: { label: "Apply to Join", href: "/#join" },
+  cta: { label: "Apply to Join", href: "/join" },
 };
 
 export const SOCIAL = {
@@ -140,7 +151,7 @@ export const FOOTER = {
     "A city-sponsored council of young professionals committed to civic engagement, leadership development, and community impact.",
   quickLinks: NAV,
   contact: {
-    email: "TODO: email (client to supply)",
+    email: "info@mypcmgm.org", // from the MYPC brandkit
     phone: "TODO: phone (client to supply)",
     address: "TODO: mailing address (client to supply)",
   },

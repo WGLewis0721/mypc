@@ -7,9 +7,43 @@ import LeadershipCard from "../components/LeadershipCard.astro";
 import EventCard from "../components/EventCard.astro";
 import MembershipSteps from "../components/MembershipSteps.astro";
 import SocialCommunity from "../components/SocialCommunity.astro";
+import StatBar from "../components/StatBar.astro";
 import CTA from "../components/CTA.astro";
 import Icon from "../components/Icon.astro";
-import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
+import { FOCUS, LEADERSHIP, MEMBERSHIP, SOCIAL, STATS } from "../data/home";
+import { fetchEvents } from "../wix/events/events";
+import { fetchPosts } from "../wix/blog/posts";
+import type { EventSummary } from "../wix/events/types";
+import type { PostSummary } from "../wix/blog/types";
+
+let events: EventSummary[] = [];
+let posts: PostSummary[] = [];
+try {
+  events = await fetchEvents();
+} catch {
+  // Homepage still renders without the events strip.
+}
+try {
+  posts = (await fetchPosts()).posts;
+} catch {
+  // Homepage still renders without the news strip.
+}
+
+/** "Nov 12, 2026, 5:30 PM" -> { month:"NOV", day:"12", time:"5:30 PM" } */
+function dateParts(e: EventSummary) {
+  const bits = (e.dateLabel || "").split(", ");
+  const head = (bits[0] || "").split(" ");
+  const iso = e.startDateIso ? new Date(e.startDateIso) : null;
+  return {
+    month: (head[0] || (iso ? iso.toLocaleString("en-US", { month: "short" }) : "")).toUpperCase().slice(0, 3),
+    day: head[1] || (iso ? String(iso.getDate()) : ""),
+    time: bits.length > 2 ? bits.slice(2).join(", ") : "",
+  };
+}
+
+const featured = events[0];
+const restEvents = events.slice(1, 3);
+const latestPosts = posts.slice(0, 3);
 ---
 
 <Layout active="home">
@@ -23,7 +57,7 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
         professionals who <strong>connect, collaborate, and serve</strong> so the next
         generation has a real hand in Montgomery&rsquo;s future.
       </p>
-      <a class="link-arrow" href="/#join">
+      <a class="link-arrow" href="/join">
         Become a member
         <Icon name="arrow-right" size={16} />
       </a>
@@ -39,7 +73,7 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
         <SectionHeader title={FOCUS.title} lede={FOCUS.lede} />
       </div>
       <div class="focus-ledger reveal">
-        {FOCUS.items.map((item) => <FocusCard {...item} href="/#join" />)}
+        {FOCUS.items.map((item) => <FocusCard {...item} href="/about" />)}
       </div>
     </div>
   </section>
@@ -52,8 +86,11 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
           onNavy
           eyebrow={LEADERSHIP.eyebrow}
           title={LEADERSHIP.title}
-          link={LEADERSHIP.viewAll}
+          link={{ label: "Meet the full Council", href: "/council" }}
         />
+      </div>
+      <div class="reveal" style="margin-bottom:clamp(2rem,1.5rem+2vw,3rem)">
+        <StatBar stats={STATS} tone="bare" />
       </div>
       <div class="leaders reveal">
         <LeadershipCard featured {...LEADERSHIP.featured} />
@@ -64,18 +101,45 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
     </div>
   </section>
 
-  <!-- 3 · Upcoming events (featured + compact list) -->
+  <!-- 3 · Upcoming events (live from Wix Events) -->
   <section id="events" class="section section--paper">
     <div class="wrap wrap--wide">
       <div class="reveal">
-        <SectionHeader title={EVENTS.title} link={EVENTS.viewAll} />
+        <SectionHeader
+          title="Upcoming events"
+          link={{ label: "View all events", href: "/events" }}
+        />
       </div>
-      <div class="events reveal">
-        <EventCard featured {...EVENTS.featured} href="/#events" />
-        <div class="events__list">
-          {EVENTS.items.map((e) => <EventCard {...e} href="/#events" />)}
-        </div>
-      </div>
+      {
+        events.length === 0 ? (
+          <p class="reveal" style="color:var(--color-ink-500)">
+            No events on the calendar right now — <a href="/events" style="color:var(--color-gold-600);text-decoration:underline">check the calendar</a>.
+          </p>
+        ) : (
+          <div class="events reveal">
+            <EventCard
+              featured
+              {...dateParts(featured)}
+              kicker="Featured event"
+              title={featured.title}
+              venue={featured.locationType === "ONLINE" ? "Online event" : featured.locationName}
+              blurb={featured.shortDescription}
+              img={featured.imageUrl}
+              href={`/events/${featured.slug}`}
+            />
+            <div class="events__list">
+              {restEvents.map((e) => (
+                <EventCard
+                  {...dateParts(e)}
+                  title={e.title}
+                  venue={e.locationType === "ONLINE" ? "Online event" : e.locationName}
+                  href={`/events/${e.slug}`}
+                />
+              ))}
+            </div>
+          </div>
+        )
+      }
     </div>
   </section>
 
@@ -87,6 +151,17 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
       <div class="reveal">
         <SectionHeader onNavy title={MEMBERSHIP.title} lede={MEMBERSHIP.lede} />
       </div>
+      <figure class="join-photo reveal">
+        <img
+          src="/img/members-group.webp"
+          alt="Members of the Mayor’s Young Professional Council"
+          width="1256"
+          height="835"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>A recent MYPC member cohort. <span>Concept image.</span></figcaption>
+      </figure>
       <div class="reveal">
         <MembershipSteps steps={MEMBERSHIP.steps} />
       </div>
@@ -101,8 +176,40 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
     </div>
   </section>
 
-  <!-- 5 · Social / community -->
-  <section id="community" class="section section--white">
+  <!-- 5 · Latest news (live from Wix Blog) -->
+  {
+    latestPosts.length > 0 && (
+      <section id="news" class="section section--white">
+        <div class="wrap wrap--wide">
+          <div class="reveal">
+            <SectionHeader
+              title="From the Council"
+              link={{ label: "All news", href: "/blog" }}
+            />
+          </div>
+          <div class="news-grid reveal">
+            {latestPosts.map((p) => (
+              <a class="news-card card" href={`/blog/${p.slug}`}>
+                {p.coverUrl && (
+                  <div class="news-card__media">
+                    <img src={p.coverUrl} alt={p.title} width="480" height="270" loading="lazy" />
+                  </div>
+                )}
+                <div class="news-card__body">
+                  <h3 class="t-h3">{p.title}</h3>
+                  {p.excerpt && <p class="news-card__excerpt">{p.excerpt}</p>}
+                  <p class="t-meta news-card__meta">{p.dateLabel}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 6 · Social / community -->
+  <section id="community" class="section section--paper">
     <div class="wrap wrap--wide">
       <div class="reveal">
         <SectionHeader title={SOCIAL.title} lede={SOCIAL.lede} />
@@ -207,7 +314,75 @@ import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
     }
   }
 
+  .join-photo {
+    margin: 0 0 clamp(2rem, 1.5rem + 2vw, 3rem);
+    border: 1px solid var(--border-on-navy);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-navy-900);
+  }
+  .join-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1256 / 835;
+    object-fit: cover;
+  }
+  .join-photo figcaption {
+    padding: 0.65rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-cloud);
+    border-top: 1px solid var(--border-on-navy);
+  }
+  .join-photo figcaption span {
+    color: rgb(255 255 255 / 0.4);
+  }
+
   .join-cta {
     margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+
+  /* News grid */
+  .news-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .news-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .news-card {
+    display: block;
+    overflow: hidden;
+  }
+  .news-card__media :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .news-card__body {
+    padding: 1.25rem;
+  }
+  .news-card__body .t-h3 {
+    color: var(--color-ink-900);
+  }
+  .news-card__excerpt {
+    margin-top: 0.4rem;
+    color: var(--color-ink-500);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-card__meta {
+    margin-top: 0.75rem;
+    color: var(--color-ink-500);
   }
 </style>

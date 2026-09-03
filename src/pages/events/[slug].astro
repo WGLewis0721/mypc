@@ -1,0 +1,140 @@
+---
+// Event detail + registration page.
+//
+// This is a Wix ITEM PAGE: the wixMetadata export + <SEO.Tags> below let the site owner edit
+// this page's title/description/OG in the dashboard and register the route in the sitemap.
+// SEO pieces and frontmatter kept verbatim from the shipped page; only the presentation and
+// the registration island are MYPC's.
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import EventRegistration from "../../components/events/EventRegistration";
+import Icon from "../../components/Icon.astro";
+import { fetchEventBySlug } from "../../wix/events/events";
+import { WIX_APPS } from "@wix/essentials";
+import { SEO } from "@wix/seo/components";
+import { loadSEOTagsServiceConfig } from "@wix/seo/services";
+import { seoTags } from "@wix/seo";
+
+export const wixMetadata = {
+  appDefId: WIX_APPS.events.id,
+  pageIdentifier: WIX_APPS.events.eventPageMetadata.pageIdentifier,
+  identifiers: {
+    slug: WIX_APPS.events.eventPageMetadata.identifiers.slug,
+  },
+};
+
+const slug = Astro.params.slug!;
+
+// Behind Wix's proxy the request URL is internal — the real public page URL arrives on
+// x-wix-forwarded-url; the SEO service needs the public one.
+const forwardedUrl = Astro.request.headers.get("x-wix-forwarded-url");
+const pageUrl =
+  forwardedUrl && URL.canParse(forwardedUrl) && /^https?:$/.test(new URL(forwardedUrl).protocol)
+    ? forwardedUrl
+    : Astro.url.href;
+
+let event = null;
+let seoTagsServiceConfig = null;
+try {
+  [event, seoTagsServiceConfig] = await Promise.all([
+    fetchEventBySlug(slug),
+    loadSEOTagsServiceConfig({
+      pageUrl,
+      itemType: seoTags.ItemType.EVENTS_PAGE,
+      itemData: { slug },
+    }).catch(() => null),
+  ]);
+} catch {
+  // Guarded: an unhandled SSR throw truncates the response mid-stream.
+}
+
+if (!event) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<SiteLayout title={`${event.title} · MYPC`} active="events">
+  <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
+
+  <section class="section section--white">
+    <div class="wrap wrap--wide">
+      <a href="/events" class="link-arrow" style="margin-bottom:1.5rem;transform:scaleX(-1);display:inline-flex">
+        <Icon name="arrow-right" size={16} />
+        <span style="transform:scaleX(-1)">All events</span>
+      </a>
+
+      <div class="ev-detail">
+        <div class="ev-detail__main">
+          {event.imageUrl && (
+            <div class="ev-detail__media">
+              <img src={event.imageUrl} alt={event.title} width="960" height="640" />
+            </div>
+          )}
+          {event.dateLabel && <p class="eyebrow" style="margin-top:1.5rem">{event.dateLabel}</p>}
+          <h1 class="t-display-l" style="margin-top:.5rem">{event.title}</h1>
+          <p class="ev-detail__where">
+            <Icon name="pin" size={16} />
+            {event.locationType === "ONLINE" ? "Online event" : event.locationName}
+            {event.priceLabel ? ` · ${event.priceLabel}` : ""}
+          </p>
+          {event.shortDescription && <p class="ev-detail__lede">{event.shortDescription}</p>}
+          {event.aboutParagraphs.map((p) => (
+            <p class="ev-detail__para">{p}</p>
+          ))}
+        </div>
+
+        <aside class="ev-detail__aside">
+          <EventRegistration client:only="react" event={event} />
+        </aside>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .ev-detail {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 3vw, 3.5rem);
+  }
+  @media (min-width: 1024px) {
+    .ev-detail {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: start;
+    }
+  }
+  .ev-detail__media {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border-light);
+  }
+  .ev-detail__media :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+  .ev-detail__where {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--color-ink-500);
+  }
+  .ev-detail__where :global(svg) {
+    color: var(--color-gold-600);
+    flex: none;
+  }
+  .ev-detail__lede {
+    margin-top: 1.25rem;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-ink-900);
+  }
+  .ev-detail__para {
+    margin-top: 1rem;
+    max-width: 62ch;
+    color: var(--color-ink-500);
+    line-height: 1.7;
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import LoginForm from "../components/members/LoginForm";
+---
+
+<SiteLayout title="Member login · MYPC" active="join">
+  <section class="section section--white">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow">Members</p>
+      <h1 class="t-display-l" style="margin-top:.5rem">Member sign in</h1>
+      <p style="margin-top:1rem;max-width:52ch;color:var(--color-ink-500);line-height:1.6">
+        Council members sign in here for the member area. Not a member yet?
+        <a href="/join" style="color:var(--color-gold-600);text-decoration:underline">Apply to join</a>.
+      </p>
+      <div style="margin-top:2rem;max-width:26rem">
+        <LoginForm client:only="react" />
+      </div>
+    </div>
+  </section>
+</SiteLayout>

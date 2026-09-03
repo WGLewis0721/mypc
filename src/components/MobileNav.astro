@@ -39,7 +39,8 @@ const { active } = Astro.props;
   </nav>
 
   <div class="mnav__cta">
-    <a href="/#join" class="btn btn--primary btn--lg btn--block">Apply to Join</a>
+    <a href="/login" class="mnav__login" data-menu-close>Member login</a>
+    <a href="/join" class="btn btn--primary btn--lg btn--block">Apply to Join</a>
     <a href="/donate" class="btn btn--secondary-navy btn--block">Donate</a>
   </div>
 </div>
@@ -131,6 +132,14 @@ const { active } = Astro.props;
     flex-direction: column;
     gap: 0.75rem;
     margin-top: 1.5rem;
+  }
+  .mnav__login {
+    align-self: flex-start;
+    padding: 0.25rem 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-gold-300);
   }
 </style>
 

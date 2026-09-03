@@ -1,0 +1,115 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import FocusCard from "../components/FocusCard.astro";
+import WixForm from "../components/forms/WixForm";
+import Icon from "../components/Icon.astro";
+import { FOCUS } from "../data/home";
+import { getForm } from "../wix/forms/forms";
+import type { FormDto } from "../wix/forms/types";
+
+const CONTACT_FORM_ID = "d525a803-41f4-418a-9c8f-02121a65336f";
+let form: FormDto | null = null;
+try {
+  form = await getForm(CONTACT_FORM_ID);
+} catch {
+  // honest fallback below
+}
+---
+
+<SiteLayout
+  title="About · MYPC"
+  description="What the Mayor's Young Professional Council is, what it does, and how to reach it."
+  active="about"
+>
+  <!-- Mission -->
+  <section class="section section--white">
+    <div class="wrap wrap--narrow reveal">
+      <p class="eyebrow">About the Council</p>
+      <h1 class="t-display-l" style="margin-top:.5rem">A hand in Montgomery&rsquo;s future</h1>
+      <p style="margin-top:1.25rem;font-size:1.125rem;line-height:1.7;color:var(--color-ink-900);max-width:60ch">
+        The Mayor&rsquo;s Young Professional Council is a city-sponsored body of young
+        professionals who connect, collaborate, and serve so the next generation has a real hand
+        in how Montgomery grows. Members give time to civic issues, neighborhood projects, and
+        appointed service on boards and commissions.
+      </p>
+      <p style="margin-top:1rem;color:var(--color-ink-500);line-height:1.7;max-width:60ch">
+        <strong style="color:var(--color-ink-900)">TODO: client to supply</strong> — the Council&rsquo;s
+        founding date, its charge from the City, meeting cadence, and the exact relationship and
+        wording for the City of Montgomery partnership and any logo-usage rights.
+      </p>
+    </div>
+  </section>
+
+  <!-- What we do -->
+  <section class="section section--paper">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader title="What the Council works on" lede={FOCUS.lede} />
+      </div>
+      <div class="focus-ledger reveal">
+        {FOCUS.items.map((item) => <FocusCard {...item} href="/join" />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section--white">
+    <div class="wrap wrap--narrow">
+      <div class="reveal">
+        <SectionHeader
+          eyebrow="Get in touch"
+          title="Contact the Council"
+          lede="Questions about membership, partnership, an event, or press. We route messages to the right committee."
+        />
+      </div>
+      <div class="reveal">
+        {
+          form ? (
+            <WixForm
+              client:load
+              initialForm={form}
+              successTitle="Message sent"
+              successBody="Thanks for reaching out. Someone from the Council will follow up by email."
+            />
+          ) : (
+            <p style="color:var(--color-ink-500)">
+              The contact form is temporarily unavailable — please try again shortly.
+            </p>
+          )
+        }
+        <ul style="margin-top:2rem;display:grid;gap:.5rem;font-size:.9375rem;color:var(--color-ink-500)">
+          <li style="display:flex;gap:.5rem;align-items:center"><Icon name="pin" size={15} /> TODO: mailing address (client to supply)</li>
+          <li style="display:flex;gap:.5rem;align-items:center"><Icon name="clock" size={15} /> TODO: general email &amp; phone (client to supply)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .focus-ledger {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .focus-ledger > :global(*) {
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--color-border-light);
+  }
+  @media (min-width: 700px) {
+    .focus-ledger {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: clamp(1.5rem, 4vw, 3.5rem);
+    }
+  }
+  @media (min-width: 1024px) {
+    .focus-ledger {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+    }
+    .focus-ledger > :global(*) {
+      border-top: 2px solid var(--color-navy-900);
+    }
+  }
+</style>

@@ -1,26 +1,31 @@
 # MYPC — Visual Design System
 
 **Status:** DEMO / CONCEPT. Not a real organization. Every page carries a visible demo notice.
-**Phase:** Visual design + general layout. Wireframe direction approved. Homepage layout system only —
-remaining pages and live Wix business services come later.
+**Phase:** Brandkit applied across all pages + live Wix business services (blog / events / forms / members).
 
 This file is the source of truth for the visual language. Build from it; don't re-decide per section.
-Art direction reference: `../ChatGPT Image Sep 2, 2026 *.png` (concept mockups — direction, not pixel target).
+**Primary reference: the MYPC brandkit** (`brief/ChatGPT Image Sep 2, 2026, 10_52_11 PM (1).png`) — logo,
+palette, type, buttons, card styles, photography direction. Concept mockups in `brief/concept-*.png` are
+layout direction only. Brandkit tokens below supersede the earlier warm-navy system.
 
 ---
 
 ## 1. Character
 
-Civic · editorial · leadership-oriented. Institutional weight without bureaucratic dryness;
-enough energy for young professionals; premium enough to represent a city-sponsored body.
+Civic · editorial · leadership-oriented. "Bold, trustworthy, inspiring — a premium civic feel
+with warmth and accessibility" (brandkit). Institutional weight without bureaucratic dryness;
+enough energy for young professionals.
+
+**Tagline:** *Connect. Collaborate. Cultivate.* — four pillars: **Connect · Collaborate · Cultivate · Serve.**
 
 **Rules out:** generic SaaS, glassmorphism, neon, startup purple/blue gradients, giant rounded
 cards in a grid, decorative blobs, oversized empty whitespace, playful rounded everything,
 stock-template symmetry.
 
-**Leans on:** deep navy foundation, warm gold, one restrained red, editorial serif display,
-strong section hierarchy, high contrast, diagonal graphic seams, civic motifs (star, capitol
-dome linework, sunburst), real photography.
+**Leans on:** MYPC-navy foundation, royal-blue support, gold emphasis (used sparingly, for premium
+moments), one civic red, editorial serif display, a rationed script accent, strong section
+hierarchy, high contrast, diagonal graphic seams, civic motifs (layered star, capitol dome
+linework, sunburst), diverse real photography reflecting civic pride.
 
 ---
 
@@ -28,52 +33,60 @@ dome linework, sunburst), real photography.
 
 Tokens only. No arbitrary hex in components.
 
+Brandkit swatches: MYPC Navy `#0B1D3A` · Royal Blue `#163A8C` · Gold `#D4AF37` · Civic Red `#B1121B` ·
+White `#FFFFFF` · Light Gray `#F5F6F8` · Charcoal `#1F2630`. Mapped to tokens:
+
 | Token | Value | Role |
 |---|---|---|
-| `--navy-900` | `#0A1A38` | Primary foundation — page ground for dark sections, header, footer |
-| `--navy-800` | `#12264C` | Secondary navy — raised panels/cards on navy, form box on navy |
-| `--navy-700` | `#1E3A6B` | Navy hover state, dividers on navy |
-| `--navy-950` | `#06122A` | Demo bar, deepest shadow ground |
-| `--gold-600` | `#A97C2E` | Primary CTA fill, strong gold on light |
-| `--gold-500` | `#C79A45` | Accent gold — eyebrows, rules, stars, arrows, CTA hover |
-| `--gold-300` | `#E4C987` | Small gold text/detail on navy |
-| `--red-600` | `#9E2A2B` | Restrained accent — diagonal seams, one focus icon, civic/vote motif |
-| `--red-500` | `#B23A34` | Red hover / lighter seam stripe |
-| `--white` | `#FFFFFF` | Bright content sections |
-| `--paper` | `#F7F3EA` | Warm off-white — alternating light sections, subtle paper texture |
-| `--ink-900` | `#16213C` | Primary text on light |
-| `--ink-500` | `#5B6472` | Muted text on light |
-| `--ink-on-navy` | `#FFFFFF` | Primary text on navy |
-| `--ink-on-navy-muted` | `#C4CEE2` | Muted text on navy |
-| `--border-light` | `#E6E1D6` | Hairline borders / card edges on light |
+| `--color-navy-900` | `#0B1D3A` | MYPC Navy — primary foundation: dark sections, header, footer |
+| `--color-navy-800` | `#12274D` | Raised panels/cards on navy, form box on navy |
+| `--color-navy-700` | `#1D3A63` | Dividers / hover on navy |
+| `--color-navy-950` | `#06101D` | Demo bar, deepest ground |
+| `--color-royal` | `#163A8C` | Royal Blue — support accent (links on light, secondary emphasis, chart/really) |
+| `--color-royal-700` | `#12306F` | Royal hover |
+| `--color-gold-600` | `#8A6D1A` | Gold **text** on light — eyebrows, arrow links (AA ~5:1). NOT the brandkit swatch. |
+| `--color-gold-500` | `#D4AF37` | Accent gold (brandkit) — rules, stars, on-navy detail, **primary button fill** |
+| `--color-gold-400` | `#E3C360` | Primary button hover |
+| `--color-gold-300` | `#ECD79B` | Small gold detail on navy |
+| `--color-red-600` | `#B1121B` | Civic Red (brandkit) — seams, accent button, one focus icon, vote motif |
+| `--color-red-500` | `#CC2B2B` | Red hover / lighter seam stripe |
+| `--color-white` | `#FFFFFF` | Bright content sections |
+| `--color-paper` | `#F5F6F8` | Light Gray (brandkit) — cool off-white alternating light sections |
+| `--color-charcoal` / `--color-ink-900` | `#1F2630` | Charcoal (brandkit) — primary text on light |
+| `--color-ink-500` | `#5A6472` | Muted text on light |
+| `--color-cloud` | `#C3CEE2` | Muted text on navy |
+| `--color-border-light` | `#E4E7EC` | Hairline borders / card edges on light |
 | `--border-on-navy` | `rgb(255 255 255 / 0.14)` | Hairline borders on navy |
-| `--focus` | `#C79A45` | Focus ring color (2px, 2px offset) |
+| `--focus` | `#D4AF37` | Focus ring (2px, 2px offset) |
 
-Dominant is navy; gold is the single voice of emphasis; red is a spice, never a surface.
-Contrast: body text on `--paper`/`--white` ≥ 7:1; on navy ≥ 8:1. Gold is decorative/large-text
-only on navy — never gold body copy at < 18px on navy below 4.5:1.
+Dominant is navy; **gold is rationed** — emphasis and premium moments only, never a spread; red is a
+spice, never a surface; royal blue is quiet support. The bright brandkit gold `#D4AF37` fails AA as
+small text on white, so gold *text* on light uses `--color-gold-600` `#8A6D1A`; `#D4AF37` is for fills,
+rules, and detail on navy. Body text on `--paper`/`--white` ≥ 7:1; on navy ≥ 8:1.
 
 ---
 
 ## 3. Typography
 
-Self-hosted variable fonts, latin subset, `@font-face` in `global.css`, both preloaded in
+Self-hosted, latin subset, `@font-face` in `global.css`. **Brandkit type: Playfair Display (headline
+serif) · Montserrat (body / UI) · Great Vibes (script accent).** Playfair + Montserrat preloaded in
 `Layout.astro`. Never Inter/Roboto/Arial as the chosen face.
 
-- **Display — Playfair Display (variable, wght 400–900).** Transitional Didone with high
-  thick/thin contrast: the genre of engraved civic certificates and newspaper mastheads.
-  Matches the concept mockups' display treatment; carries institutional weight without
-  feeling bureaucratic. Used for hero H1, section H2s, featured names, card headings, the
-  mission statement.
+- **Display — Playfair Display (variable, wght 400–900).** Transitional Didone, high thick/thin
+  contrast — engraved civic certificates, newspaper mastheads. Hero H1, section H2s, featured
+  names, card headings, mission statement, stat numbers.
   `--font-display: "Playfair Display", Georgia, "Times New Roman", serif;`
-  (Chosen over Fraunces, which reads as a generic AI-era display serif; Playfair is closer
-  to the mockups and is a sanctioned editorial-serif choice.)
-- **Text / UI — Libre Franklin (variable, wght 100–900).** Franklin Gothic lineage,
-  American civic/editorial. Body, nav, labels, buttons, meta.
-  `--font-sans: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;`
+- **Text / UI — Montserrat (variable, wght 100–900).** Geometric, contemporary, civic-modern
+  (brandkit body face). Body, nav, labels, buttons, meta, eyebrows. Weights: 400 body, 600
+  labels/buttons/eyebrows, 500 nav.
+  `--font-sans: "Montserrat Variable", "Montserrat", "Segoe UI", Arial, sans-serif;`
+- **Script accent — Great Vibes (400).** Flowing formal script. **Rationed** — the hero flourish
+  ("The next generation of") and at most one other premium moment per page. Never for UI, never a
+  full line of running text, never below ~24px. `.t-script` utility, gold.
+  `--font-script: "Great Vibes", "Snell Roundhand", "Segoe Script", cursive;`
 
-`font-display: swap`, fallback stacks metric-close (Georgia / Franklin Gothic). Preload:
-`playfair-display-latin-wght-normal.woff2`, `libre-franklin-latin-wght-normal.woff2`.
+`font-display: swap`, fallback stacks metric-close. Preload:
+`playfair-display-latin-wght-normal.woff2`, `montserrat-latin-wght-normal.woff2`.
 
 ### Roles (fluid, 375 → 1440)
 
@@ -157,6 +170,17 @@ Institutional = mostly square.
 - **Event — compact:** no image; inline navy date chip + serif title + meta + "Details →",
   stacked and rule-separated. 2 per column beside the featured event ≥ `lg`.
 
+### Logo lockup (`Logo.astro`)
+Layered civic star mark — three offset 5-point stars (navy base at low opacity, civic-red rotated
+12°, gold on top) around a navy roundel with a gold capitol-dome hint — beside the **MYPC** wordmark
+(Playfair, 600, tracked). `sub` shows two stacked lines: "Mayor's Young Professional Council" (cloud)
+and "City of Montgomery, Alabama" (gold-300), both hidden below `lg`.
+
+### Stat bar (`StatBar.astro`)
+Brandkit "info / stat card". Icon tile (gold-on-navy) + Playfair value + uppercase Montserrat label.
+Stacked, hairline-divided on mobile; 3-up with vertical rules ≥ 720px. `tone="navy"` = inset panel on
+a light section; `tone="bare"` = already on navy. Figures are illustrative for the concept build.
+
 ### Section header
 H2 (Playfair) + `40 × 3px` gold rule beneath it + optional lede + optional right-aligned
 "View all →". **Eyebrow is rationed** — at most one section eyebrow on the page besides the
@@ -213,8 +237,13 @@ low-opacity civic linework.
 - Treatment: navy multiply overlay (12–20%) on hero composition for legibility; gold+red diagonal
   framing strip on the hero image edge; bottom navy scrim on portrait cards.
 - Crops: portrait 4:5 · event thumb 4:3 · hero panel ~5:4 desktop / 16:9 band mobile.
-- Placeholders until approved assets exist: navy block, centered star, caption. No fake logos,
-  names, quotes, stats presented as real — those stay visible `TODO: client to supply`.
+- **Leadership portraits (in place):** 5 studio headshots from the brief, background-removed and
+  flattened onto MYPC Navy `#0B1D3A`, 4:5, `public/img/leadership/*.webp` (17–28 KB each). Generated
+  stand-ins for the concept build — names from the brandkit where shown, else illustrative; a visible
+  note on `/council` says so. TODO: client to supply the confirmed roster + real headshots.
+- Remaining placeholders: community story image, event photos beyond the featured one — navy block,
+  centered star, caption. No fake third-party logos, real names/quotes/stats presented as real —
+  those stay visible `TODO: client to supply`.
 - Formats: AVIF + WebP, dimensions reserved, LCP hero image not lazy-loaded.
 
 ---

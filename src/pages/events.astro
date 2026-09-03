@@ -1,0 +1,34 @@
+---
+// Events listing — data fetched SERVER-SIDE (SEO) and handed to the island as DTO props.
+// Frontmatter fetch pattern kept from the shipped page; presentation is MYPC's.
+import SiteLayout from "../layouts/SiteLayout.astro";
+import EventGrid from "../components/events/EventGrid";
+import SectionHeader from "../components/SectionHeader.astro";
+import { fetchEvents } from "../wix/events/events";
+import type { EventSummary } from "../wix/events/types";
+
+let events: EventSummary[] = [];
+try {
+  events = await fetchEvents();
+} catch {
+  // An unguarded SSR throw truncates the response mid-stream; the island renders the
+  // empty state instead.
+}
+---
+
+<SiteLayout title="Events · MYPC" description="Mixers, service days and civic gatherings hosted by the Mayor's Young Professional Council." active="events">
+  <section class="section section--white">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader
+          eyebrow="What's on"
+          title="Events & gatherings"
+          lede="Networking mixers, service days and civic programming. RSVP is open to members and prospective members alike."
+        />
+      </div>
+      <div class="reveal">
+        <EventGrid client:load initialEvents={events} />
+      </div>
+    </div>
+  </section>
+</SiteLayout>
