@@ -1,0 +1,221 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  month: string;
+  day: string;
+  title: string;
+  time: string;
+  venue: string;
+  kicker?: string;
+  blurb?: string;
+  featured?: boolean;
+  img?: string;
+  href?: string;
+}
+const {
+  month,
+  day,
+  title,
+  time,
+  venue,
+  kicker,
+  blurb,
+  featured = false,
+  img,
+  href = "#",
+} = Astro.props;
+---
+
+{
+  featured ? (
+    <article class="ecf">
+      {img && (
+        <div class="ecf__media">
+          <img src={img} alt={title} width="720" height="540" loading="lazy" decoding="async" />
+        </div>
+      )}
+      <div class="ecf__body">
+        <div class="ecf__head">
+          <span class="ecf__date">
+            <span class="ec__month">{month}</span>
+            <span class="ec__day">{day}</span>
+          </span>
+          <div>
+            {kicker && <p class="ecf__kicker">{kicker}</p>}
+            <h3 class="ecf__title">{title}</h3>
+          </div>
+        </div>
+        <ul class="ec__meta ecf__meta">
+          <li><Icon name="clock" size={15} /> {time}</li>
+          <li><Icon name="pin" size={15} /> {venue}</li>
+        </ul>
+        {blurb && <p class="ecf__blurb">{blurb}</p>}
+        <a class="btn btn--secondary-light ecf__cta" href={href}>
+          RSVP &amp; details
+        </a>
+      </div>
+    </article>
+  ) : (
+    <article class="ec">
+      <span class="ec__date">
+        <span class="ec__month">{month}</span>
+        <span class="ec__day">{day}</span>
+      </span>
+      <div class="ec__body">
+        <h3 class="t-h3 ec__title">{title}</h3>
+        <ul class="ec__meta">
+          <li><Icon name="clock" size={15} /> {time}</li>
+          <li><Icon name="pin" size={15} /> {venue}</li>
+        </ul>
+      </div>
+      <a class="link-arrow ec__link" href={href}>
+        Details
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </article>
+  )
+}
+
+<style>
+  .ec__month {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-gold-500);
+  }
+  .ec__day {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 540;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+  }
+  .ec__date {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 52px;
+    padding: 0.35rem 0.55rem 0.4rem;
+    background: var(--color-navy-900);
+    border-radius: var(--radius-sm);
+    line-height: 1;
+    flex: none;
+  }
+  .ec__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    color: var(--color-ink-500);
+    font-size: 0.8125rem;
+  }
+  .ec__meta li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ec__meta :global(svg) {
+    color: var(--color-gold-600);
+    flex: none;
+  }
+
+  /* compact row item */
+  .ec {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 0;
+  }
+  .ec__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .ec__title {
+    color: var(--color-ink-900);
+  }
+  .ec__link {
+    flex: none;
+    padding-top: 0.15rem;
+  }
+  @media (max-width: 520px) {
+    .ec {
+      flex-wrap: wrap;
+    }
+    .ec__link {
+      width: 100%;
+    }
+  }
+
+  /* featured event — text-forward card; image optional on top */
+  .ecf {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .ecf__media :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .ecf__body {
+    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .ecf__head {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .ecf__date {
+    flex: none;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 58px;
+    padding: 0.45rem 0.65rem 0.5rem;
+    background: var(--color-navy-900);
+    border-radius: var(--radius-sm);
+    line-height: 1;
+  }
+  .ecf__date .ec__day {
+    font-size: 1.5rem;
+  }
+  .ecf__kicker {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-gold-600);
+    margin-bottom: 0.35rem;
+  }
+  .ecf__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.125rem);
+    line-height: 1.1;
+    font-weight: 500;
+    color: var(--color-ink-900);
+    text-wrap: balance;
+  }
+  .ecf__meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.5rem;
+  }
+  .ecf__blurb {
+    max-width: 54ch;
+    color: var(--color-ink-500);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  .ecf__cta {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+</style>

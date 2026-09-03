@@ -1,0 +1,99 @@
+---
+interface Props {
+  steps: { n: number; title: string; body: string }[];
+}
+const { steps } = Astro.props;
+---
+
+<ol class="steps">
+  {
+    steps.map((s) => (
+      <li class="step">
+        <span class="step__node" aria-hidden="true">
+          {String(s.n).padStart(2, "0")}
+        </span>
+        <div class="step__text">
+          <h3 class="step__title">{s.title}</h3>
+          <p class="step__body">{s.body}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    gap: 1.5rem 1.25rem;
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+  }
+  .step__node {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-pill);
+    background: var(--color-navy-800);
+    border: 1px solid var(--color-gold-600);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 540;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-gold-500);
+  }
+  .step__title {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .step__body {
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-cloud);
+  }
+
+  /* mobile: vertical rail connecting the nodes */
+  @media (max-width: 767px) {
+    .step:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: -1.5rem;
+      width: 1px;
+      background: var(--border-on-navy);
+    }
+  }
+
+  /* desktop: 4 across, connected by a rule through the nodes */
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .step {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .step:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: calc(24px + 1rem);
+      right: -2rem;
+      top: 24px;
+      height: 1px;
+      background: var(--border-on-navy);
+    }
+  }
+</style>

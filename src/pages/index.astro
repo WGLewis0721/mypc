@@ -1,0 +1,213 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import FocusCard from "../components/FocusCard.astro";
+import LeadershipCard from "../components/LeadershipCard.astro";
+import EventCard from "../components/EventCard.astro";
+import MembershipSteps from "../components/MembershipSteps.astro";
+import SocialCommunity from "../components/SocialCommunity.astro";
+import CTA from "../components/CTA.astro";
+import Icon from "../components/Icon.astro";
+import { FOCUS, LEADERSHIP, EVENTS, MEMBERSHIP, SOCIAL } from "../data/home";
+---
+
+<Layout active="home">
+  <Hero img="/img/hero-capitol.webp" />
+
+  <!-- Mission statement -->
+  <section id="about" class="section section--paper mission">
+    <div class="wrap wrap--narrow reveal">
+      <p class="mission__body">
+        The Mayor&rsquo;s Young Professional Council is a city-sponsored body of young
+        professionals who <strong>connect, collaborate, and serve</strong> so the next
+        generation has a real hand in Montgomery&rsquo;s future.
+      </p>
+      <a class="link-arrow" href="/#join">
+        Become a member
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </div>
+  </section>
+
+  <hr class="seam" aria-hidden="true" />
+
+  <!-- 1 · Focus areas (rule-divided ledger) -->
+  <section id="focus" class="section section--white">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader title={FOCUS.title} lede={FOCUS.lede} />
+      </div>
+      <div class="focus-ledger reveal">
+        {FOCUS.items.map((item) => <FocusCard {...item} href="/#join" />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Featured leadership (featured + row) -->
+  <section id="leadership" class="section section--navy">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader
+          onNavy
+          eyebrow={LEADERSHIP.eyebrow}
+          title={LEADERSHIP.title}
+          link={LEADERSHIP.viewAll}
+        />
+      </div>
+      <div class="leaders reveal">
+        <LeadershipCard featured {...LEADERSHIP.featured} />
+        <div class="leaders__row">
+          {LEADERSHIP.members.map((m) => <LeadershipCard {...m} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Upcoming events (featured + compact list) -->
+  <section id="events" class="section section--paper">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader title={EVENTS.title} link={EVENTS.viewAll} />
+      </div>
+      <div class="events reveal">
+        <EventCard featured {...EVENTS.featured} href="/#events" />
+        <div class="events__list">
+          {EVENTS.items.map((e) => <EventCard {...e} href="/#events" />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="seam" aria-hidden="true" />
+
+  <!-- 4 · Membership funnel -->
+  <section id="join" class="section section--navy">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader onNavy title={MEMBERSHIP.title} lede={MEMBERSHIP.lede} />
+      </div>
+      <div class="reveal">
+        <MembershipSteps steps={MEMBERSHIP.steps} />
+      </div>
+      <div class="join-cta reveal">
+        <CTA
+          tone="gold"
+          title="Ready to make an impact?"
+          body="Applications are open to young professionals who live or work in Montgomery and are ready to lead, serve, and grow."
+          action={MEMBERSHIP.cta}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Social / community -->
+  <section id="community" class="section section--white">
+    <div class="wrap wrap--wide">
+      <div class="reveal">
+        <SectionHeader title={SOCIAL.title} lede={SOCIAL.lede} />
+      </div>
+      <div class="reveal">
+        <SocialCommunity />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Mission band */
+  .mission__body {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1.05rem + 1.6vw, 2.125rem);
+    line-height: 1.32;
+    font-weight: 480;
+    color: var(--color-ink-900);
+    text-wrap: balance;
+  }
+  .mission__body strong {
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  /* Focus ledger: rule-divided columns, no cards */
+  .focus-ledger {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .focus-ledger > :global(*) {
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--color-border-light);
+  }
+  @media (min-width: 700px) {
+    .focus-ledger {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: clamp(1.5rem, 4vw, 3.5rem);
+    }
+    .focus-ledger > :global(*) {
+      padding-inline: 0;
+    }
+    .focus-ledger > :global(*:nth-child(2)) {
+      border-top: 1px solid var(--color-border-light);
+    }
+  }
+  @media (min-width: 1024px) {
+    .focus-ledger {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+    }
+    .focus-ledger > :global(*) {
+      border-top: 2px solid var(--color-navy-900);
+      padding-top: 1.5rem;
+      border-bottom: 0;
+    }
+  }
+
+  /* Leadership: featured card + supporting row */
+  .leaders {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+  }
+  .leaders__row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  @media (min-width: 1024px) {
+    .leaders {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+      align-items: center;
+    }
+    .leaders__row {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+  }
+
+  /* Events: featured + compact rule-separated list */
+  .events {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 2.75rem);
+  }
+  .events__list {
+    display: flex;
+    flex-direction: column;
+  }
+  .events__list > :global(*) {
+    border-top: 1px solid var(--color-border-light);
+  }
+  .events__list > :global(*:first-child) {
+    border-top: 0;
+  }
+  @media (min-width: 1024px) {
+    .events {
+      grid-template-columns: 1.25fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .join-cta {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+</style>

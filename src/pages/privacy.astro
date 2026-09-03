@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Privacy Policy | MYPC" active="privacy">
+  <section class="section section--navy stub">
+    <div class="wrap wrap--narrow reveal">
+      <p class="stub__eyebrow">Legal</p>
+      <h1 class="t-display-l">Privacy Policy</h1>
+      <span class="rule"></span>
+      <p class="stub__body">
+        Placeholder page for the concept build. The Council&rsquo;s privacy policy and
+        data-handling terms are <strong>TODO: client to supply</strong>, reviewed by
+        the City&rsquo;s legal team before launch.
+      </p>
+      <a class="btn btn--secondary-navy" href="/">Back to home</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .stub {
+    min-height: 55vh;
+    display: flex;
+    align-items: center;
+  }
+  .stub__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gold-500);
+    margin-bottom: 0.75rem;
+  }
+  .stub .rule {
+    margin: 1.25rem 0;
+  }
+  .stub__body {
+    max-width: 52ch;
+    color: var(--color-cloud);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+  }
+  .stub__body strong {
+    color: #fff;
+    font-weight: 600;
+  }
+</style>

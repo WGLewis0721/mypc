@@ -1,0 +1,258 @@
+---
+import Placeholder from "./Placeholder.astro";
+import { HERO } from "../data/home";
+
+interface Props {
+  img?: string;
+}
+const { img } = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <svg viewBox="0 0 600 500" preserveAspectRatio="xMaxYMid slice" class="hero__burst">
+      <g stroke="var(--color-gold-500)" stroke-width="1">
+        {
+          Array.from({ length: 20 }).map((_, i) => {
+            const a = (i / 20) * Math.PI * 2;
+            return (
+              <line
+                x1="470"
+                y1="150"
+                x2={470 + Math.cos(a) * 620}
+                y2={150 + Math.sin(a) * 620}
+              />
+            );
+          })
+        }
+      </g>
+    </svg>
+    <svg viewBox="0 0 240 160" class="hero__dome">
+      <path
+        d="M20 160 V96 a100 64 0 0 1 200 0 V160 M120 32 a58 58 0 0 1 58 58 M120 32 a58 58 0 0 0 -58 58 M112 30 h16 v-14 h-16 z M118 4 h4 v12 h-4 z"
+        fill="none"
+        stroke="var(--color-navy-700)"
+        stroke-width="3"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="wrap wrap--wide hero__inner">
+    <div class="hero__content">
+      <span class="rule"></span>
+      <p class="eyebrow eyebrow--on-navy hero__eyebrow">{HERO.eyebrow}</p>
+      <h1 class="t-display-xl hero__title">
+        {HERO.title.map((line) => <span>{line}</span>)}
+      </h1>
+      <p class="t-body-lg hero__lede">{HERO.lede}</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href={HERO.primary.href}>{HERO.primary.label}</a>
+        <a class="btn btn--secondary-navy" href={HERO.secondary.href}>
+          {HERO.secondary.label}
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <div class="hero__frame">
+        {
+          img ? (
+            <img
+              src={img}
+              alt="The Alabama State Capitol in Montgomery at golden hour"
+              width="1280"
+              height="1024"
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
+            />
+          ) : (
+            <Placeholder ratio="5 / 4" tone="navy-800" label="Group photography, civic setting" />
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: clip;
+    background: var(--color-navy-900);
+    color: #fff;
+    padding-block: clamp(1.5rem, 0.5rem + 3vw, 3.5rem) clamp(2rem, 1rem + 4vw, 4.5rem);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero__burst {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.06;
+  }
+  .hero__dome {
+    position: absolute;
+    right: 4%;
+    bottom: 0;
+    width: clamp(180px, 26vw, 320px);
+    opacity: 0.5;
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(2rem, 1rem + 5vw, 4rem);
+    align-items: stretch;
+  }
+
+  .hero__content {
+    max-width: 36rem;
+  }
+  .hero__eyebrow {
+    margin-top: 1rem;
+  }
+  .hero__title {
+    margin-top: 0.75rem;
+    color: #fff;
+  }
+  .hero__title span {
+    display: block;
+  }
+  .hero__lede {
+    margin-top: 1.25rem;
+    max-width: 42ch;
+    color: var(--color-cloud);
+  }
+  .hero__cta {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  /* media panel + diagonal gold/red framing */
+  .hero__media {
+    position: relative;
+    --cut: 13%;
+  }
+  .hero__media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      118deg,
+      var(--color-gold-500) 0 3.4%,
+      var(--color-red-600) 3.4% 6.2%,
+      transparent 6.2% 100%
+    );
+  }
+  .hero__frame {
+    position: relative;
+    height: 100%;
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .hero__frame :global(.ph) {
+    background: linear-gradient(
+      155deg,
+      var(--color-navy-700),
+      var(--color-navy-800) 70%
+    );
+    border-color: rgb(255 255 255 / 0.16);
+  }
+  .hero__frame :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.94fr);
+    }
+    .hero__media {
+      min-height: 30rem;
+    }
+    .hero__frame :global(img) {
+      aspect-ratio: auto;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .hero__media {
+      --cut: 0%;
+      margin-top: 0.5rem;
+    }
+    .hero__media::before {
+      inset: 0 0 auto 0;
+      height: 6px;
+      background: linear-gradient(
+        90deg,
+        var(--color-gold-500) 0 62%,
+        var(--color-red-600) 62% 100%
+      );
+    }
+    .hero__frame {
+      clip-path: none;
+      padding-top: 6px;
+    }
+    .hero__frame :global(img) {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 1.25rem;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .hero__cta .btn {
+      flex: 1 1 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__content > *,
+    .hero__title span,
+    .hero__media {
+      animation: hero-rise 0.62s var(--ease) backwards;
+    }
+    .rule {
+      animation-delay: 0.05s;
+    }
+    .hero__eyebrow {
+      animation-delay: 0.12s;
+    }
+    .hero__title span:nth-child(1) {
+      animation-delay: 0.19s;
+    }
+    .hero__title span:nth-child(2) {
+      animation-delay: 0.25s;
+    }
+    .hero__lede {
+      animation-delay: 0.34s;
+    }
+    .hero__cta {
+      animation-delay: 0.42s;
+    }
+    .hero__media {
+      animation-delay: 0.3s;
+      animation-duration: 0.8s;
+    }
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+</style>

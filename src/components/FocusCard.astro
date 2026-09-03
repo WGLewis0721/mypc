@@ -1,0 +1,60 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  icon: "building" | "users" | "briefcase" | "heart";
+  accent?: "navy" | "red";
+  title: string;
+  body: string;
+  href?: string;
+}
+const { icon, accent = "navy", title, body, href = "#" } = Astro.props;
+---
+
+<article class="fc">
+  <span class:list={["fc__glyph", { "fc__glyph--red": accent === "red" }]} aria-hidden="true">
+    <Icon name={icon} size={26} />
+  </span>
+  <h3 class="fc__title">{title}</h3>
+  <p class="fc__body">{body}</p>
+  <a class="link-arrow fc__link" href={href}>
+    Learn more
+    <Icon name="arrow-right" size={16} />
+  </a>
+</article>
+
+<style>
+  /* Rule-divided ledger item — no card shell. Dividers drawn by the parent. */
+  .fc {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.25rem 0 0.5rem;
+  }
+  .fc__glyph {
+    color: var(--color-navy-900);
+    margin-bottom: 0.35rem;
+  }
+  .fc__glyph--red {
+    color: var(--color-red-600);
+  }
+  .fc__title {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-900);
+  }
+  .fc__body {
+    color: var(--color-ink-500);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+  .fc__link {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-size: 0.75rem;
+  }
+</style>

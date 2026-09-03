@@ -1,0 +1,102 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  action: { label: string; href: string };
+  secondary?: { label: string; href: string };
+  tone?: "gold" | "navy";
+}
+const { eyebrow, title, body, action, secondary, tone = "gold" } = Astro.props;
+---
+
+<div class:list={["cta", `cta--${tone}`]}>
+  <div class="cta__text">
+    {eyebrow && <p class="eyebrow cta__eyebrow">{eyebrow}</p>}
+    <p class="cta__title">{title}</p>
+    {body && <p class="cta__body">{body}</p>}
+  </div>
+  <div class="cta__actions">
+    <a
+      class:list={[
+        "btn",
+        "btn--lg",
+        tone === "gold" ? "btn--secondary-light" : "btn--primary",
+      ]}
+      href={action.href}
+    >
+      {action.label}
+      <Icon name="arrow-right" size={16} />
+    </a>
+    {
+      secondary && (
+        <a
+          class:list={[
+            "btn",
+            tone === "gold" ? "btn--secondary-light" : "btn--secondary-navy",
+          ]}
+          href={secondary.href}
+        >
+          {secondary.label}
+        </a>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 2.5rem;
+    padding: clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem) clamp(1.5rem, 1rem + 3vw, 3rem);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta--gold {
+    background: var(--color-gold-500);
+    color: var(--color-navy-900);
+  }
+  .cta--navy {
+    background: var(--color-navy-800);
+    color: #fff;
+    border: 1px solid var(--border-on-navy);
+  }
+  .cta__eyebrow {
+    color: inherit;
+    opacity: 0.72;
+  }
+  .cta__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+    line-height: 1.14;
+    font-weight: 520;
+    max-width: 22ch;
+  }
+  .cta__body {
+    margin-top: 0.5rem;
+    max-width: 44ch;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    opacity: 0.82;
+  }
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    flex: none;
+  }
+  @media (max-width: 560px) {
+    .cta__actions {
+      width: 100%;
+    }
+    .cta__actions .btn {
+      flex: 1 1 100%;
+    }
+  }
+</style>

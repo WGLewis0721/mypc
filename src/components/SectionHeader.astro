@@ -1,0 +1,86 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  link?: { label: string; href: string };
+  onNavy?: boolean;
+  align?: "start" | "center";
+}
+const { eyebrow, title, lede, link, onNavy = false, align = "start" } = Astro.props;
+---
+
+<div class:list={["sh", `sh--${align}`, { "sh--navy": onNavy }]}>
+  <div class="sh__head">
+    {
+      eyebrow && (
+        <p class:list={["eyebrow", { "eyebrow--on-navy": onNavy }]}>{eyebrow}</p>
+      )
+    }
+    <h2 class="t-h2">{title}</h2>
+    <span class="rule"></span>
+    {lede && <p class="sh__lede">{lede}</p>}
+  </div>
+
+  {
+    link && (
+      <a
+        href={link.href}
+        class:list={["link-arrow", { "link-arrow--on-navy": onNavy }, "sh__link"]}
+      >
+        {link.label}
+        <Icon name="arrow-right" size={16} />
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .sh {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(2rem, 1.4rem + 2.5vw, 3.25rem);
+  }
+  .sh--center {
+    justify-content: center;
+    text-align: center;
+  }
+  .sh--center .rule {
+    margin-inline: auto;
+  }
+  .sh__head {
+    max-width: 32ch;
+  }
+  .sh--center .sh__head {
+    margin-inline: auto;
+  }
+  .eyebrow {
+    margin-bottom: 0.7rem;
+  }
+  .rule {
+    margin-top: 1rem;
+  }
+  .sh__lede {
+    margin-top: 1rem;
+    max-width: 46ch;
+    color: var(--color-ink-500);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  .sh--navy .sh__lede {
+    color: var(--color-cloud);
+  }
+  .sh__link {
+    padding-bottom: 0.35rem;
+  }
+  @media (max-width: 640px) {
+    .sh {
+      align-items: flex-start;
+    }
+  }
+</style>

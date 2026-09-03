@@ -57,15 +57,23 @@ only on navy — never gold body copy at < 18px on navy below 4.5:1.
 
 ## 3. Typography
 
-Self-hosted variable fonts (Fontsource). Never Inter/Roboto/Arial as the chosen face.
+Self-hosted variable fonts, latin subset, `@font-face` in `global.css`, both preloaded in
+`Layout.astro`. Never Inter/Roboto/Arial as the chosen face.
 
-- **Display — Fraunces Variable.** Editorial old-style with high optical contrast at display sizes.
-  Axes: `opsz` 72, `wght` 460–560, `SOFT` 0, `WONK` 0 (institutional, not quirky).
-  `--font-display: "Fraunces Variable", Fraunces, Georgia, "Times New Roman", serif;`
-- **Text / UI — Libre Franklin Variable.** Franklin Gothic lineage — American civic/editorial.
-  `--font-sans: "Libre Franklin Variable", "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;`
+- **Display — Playfair Display (variable, wght 400–900).** Transitional Didone with high
+  thick/thin contrast: the genre of engraved civic certificates and newspaper mastheads.
+  Matches the concept mockups' display treatment; carries institutional weight without
+  feeling bureaucratic. Used for hero H1, section H2s, featured names, card headings, the
+  mission statement.
+  `--font-display: "Playfair Display", Georgia, "Times New Roman", serif;`
+  (Chosen over Fraunces, which reads as a generic AI-era display serif; Playfair is closer
+  to the mockups and is a sanctioned editorial-serif choice.)
+- **Text / UI — Libre Franklin (variable, wght 100–900).** Franklin Gothic lineage,
+  American civic/editorial. Body, nav, labels, buttons, meta.
+  `--font-sans: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;`
 
-`font-display: swap`. Subset latin. Preload the two display weights used above the fold.
+`font-display: swap`, fallback stacks metric-close (Georgia / Franklin Gothic). Preload:
+`playfair-display-latin-wght-normal.woff2`, `libre-franklin-latin-wght-normal.woff2`.
 
 ### Roles (fluid, 375 → 1440)
 
@@ -137,16 +145,27 @@ Institutional = mostly square.
 - Focus (all): `outline: 2px solid var(--focus); outline-offset: 2px`.
 
 ### Cards
-- **Focus card:** circular icon badge (56px, navy fill; one badge is `--red-600`), sans caps title,
-  1–2 line description, tertiary "Learn More →". Border hairline; hover lifts 2px + border → gold.
-- **Leadership card:** 4:5 portrait, bottom navy gradient scrim, serif name + gold role label
-  overlaid. `--radius-md`. Rail item width `clamp(200px, 60vw, 248px)` on mobile.
-- **Event card:** date chip (top-left, navy block: month caps + day numeral), optional 4:3 image,
-  serif title, meta rows (time, venue) with small gold icons, tertiary CTA. 3-up on desktop.
+- **Focus item (ledger, not a card):** bare civic glyph (navy; one is `--red-600`), sans caps
+  title, one-line description, tertiary "Learn more →". No card shell — items are divided by a
+  `2px` navy top rule (desktop) / `1px` hairline (stacked). Four across ≥ `lg`.
+- **Leadership — featured:** wide card, 4:5 portrait + role label, serif name (Playfair,
+  clamp 1.5→2rem), one-line intro. 200px + 1fr grid ≥ 600px.
+- **Leadership — compact:** 4:5 portrait, bottom navy gradient scrim, serif name + gold role
+  label overlaid. `--radius-md`. 2-up ≤ `lg`, 4-up ≥ `lg` beside the featured card.
+- **Event — featured:** 1.5fr / 1fr split, 4:3 photo with navy date chip top-left, gold kicker,
+  serif title, meta rows, one-line blurb, solid secondary CTA.
+- **Event — compact:** no image; inline navy date chip + serif title + meta + "Details →",
+  stacked and rule-separated. 2 per column beside the featured event ≥ `lg`.
 
 ### Section header
-Eyebrow (gold caps) + optional star trio · H2 · optional right-aligned "View all →".
-Gold `3px × 40px` rule under the eyebrow.
+H2 (Playfair) + `40 × 3px` gold rule beneath it + optional lede + optional right-aligned
+"View all →". **Eyebrow is rationed** — at most one section eyebrow on the page besides the
+hero (currently: Featured Leadership). The headline alone carries every other section.
+
+### Layout families (no two sections share one)
+hero split · mission statement (centered, narrow) · focus ledger (rule-divided row) ·
+leadership (featured + supporting grid) · events (featured + rule-separated list) ·
+membership (numbered process) · community (editorial feature + side list).
 
 ### Diagonal seam (decorative, `aria-hidden`)
 Thin band between some sections: gold + red parallel stripes on a `-12deg` skew, via `clip-path`.

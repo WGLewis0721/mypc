@@ -1,0 +1,129 @@
+---
+import "../styles/global.css";
+import DemoNotice from "../components/DemoNotice.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  active?: string;
+}
+const {
+  title = "MYPC: The Next Generation of Montgomery Leadership",
+  description = "Mayor's Young Professional Council (concept). Connecting young professionals, collaborating on impactful initiatives, cultivating leaders, and serving Montgomery.",
+  active,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#06122a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <script is:inline>
+      // Gate reveal-hiding on JS so content is never invisible without it.
+      document.documentElement.classList.add("js");
+    </script>
+
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/playfair-display-latin-wght-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/libre-franklin-latin-wght-normal.woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <DemoNotice />
+    <Header active={active} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <style>
+      .skip {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        z-index: 200;
+        background: var(--color-gold-600);
+        color: var(--color-navy-900);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.6rem 1.1rem;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        transition: transform var(--dur) var(--ease);
+        white-space: nowrap;
+      }
+      .skip:focus-visible {
+        transform: translate(-50%, 0);
+      }
+      main {
+        display: block;
+      }
+    </style>
+
+    <script>
+      // Staggered scroll reveals — progressive enhancement, never leaves content hidden.
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const groups = [...document.querySelectorAll<HTMLElement>(".reveal")];
+      const showAll = () => groups.forEach((g) => g.classList.add("is-visible"));
+
+      if (mq.matches || !("IntersectionObserver" in window)) {
+        showAll();
+      } else {
+        groups.forEach((group) =>
+          [...group.children].forEach((child, i) =>
+            (child as HTMLElement).style.setProperty("--i", String(i)),
+          ),
+        );
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-visible");
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px 15% 0px", threshold: 0 },
+        );
+        groups.forEach((g) => io.observe(g));
+        // Safety net: nothing stays hidden even if an observation is missed.
+        window.addEventListener("load", () =>
+          setTimeout(() => {
+            groups.forEach((g) => {
+              const r = g.getBoundingClientRect();
+              if (r.top < window.innerHeight * 1.15) g.classList.add("is-visible");
+            });
+          }, 400),
+        );
+        setTimeout(showAll, 2500);
+      }
+    </script>
+  </body>
+</html>

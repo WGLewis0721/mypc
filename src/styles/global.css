@@ -1,0 +1,430 @@
+@import "tailwindcss";
+
+/* Self-hosted variable fonts (latin subset, Fontsource files). Preloaded in Layout. */
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/playfair-display-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Libre Franklin";
+  src: url("/fonts/libre-franklin-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   MYPC global design system
+   Source of truth: DESIGN.md. Civic · editorial · leadership-oriented.
+   Deep navy foundation · warm gold accent · restrained red · editorial serif.
+   Edit tokens here; components read them via var() and a few utility classes.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Brand palette — navy foundation */
+  --color-navy-950: #06122a;
+  --color-navy-900: #0a1a38;
+  --color-navy-800: #12264c;
+  --color-navy-700: #1e3a6b;
+
+  /* Gold — the single voice of emphasis */
+  --color-gold-600: #a97c2e;
+  --color-gold-500: #c79a45;
+  --color-gold-300: #e4c987;
+
+  /* Red — spice, never a surface */
+  --color-red-600: #9e2a2b;
+  --color-red-500: #b23a34;
+
+  /* Light grounds + ink */
+  --color-paper: #f7f3ea;
+  --color-white: #ffffff;
+  --color-ink-900: #16213c;
+  --color-ink-500: #5b6472;
+  --color-cloud: #c4cee2; /* muted text on navy */
+  --color-border-light: #e6e1d6;
+
+  /* Type families — self-hosted (see @font-face above), preloaded in Layout */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;
+
+  /* Radii — institutional = mostly square */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+}
+
+/* Non-utility tokens: spacing rhythm, layout, motion */
+:root {
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8rem;
+
+  --container: 1200px;
+  --container-wide: 1360px;
+  --container-narrow: 760px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --section-y: clamp(3rem, 2rem + 3.5vw, 5.25rem);
+
+  --focus: var(--color-gold-500);
+  --border-on-navy: rgb(255 255 255 / 0.14);
+
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --dur: 220ms;
+  --dur-slow: 480ms;
+
+  --header-h: 68px;
+  --demo-h: 34px;
+}
+
+/* ─── base ─────────────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + var(--demo-h) + 1rem);
+  }
+
+  a,
+  button,
+  summary {
+    touch-action: manipulation;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-navy-900);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 540;
+    line-height: 1.1;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  ::selection {
+    background: var(--color-gold-300);
+    color: var(--color-navy-900);
+  }
+}
+
+/* ─── typography scale ─────────────────────────────────────────────────────── */
+@layer components {
+  .t-display-xl {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 1.9rem + 4.3vw, 5rem);
+    line-height: 1.02;
+    font-weight: 540;
+    letter-spacing: -0.02em;
+  }
+  .t-display-l {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);
+    line-height: 1.06;
+    font-weight: 520;
+    letter-spacing: -0.015em;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+    line-height: 1.12;
+    font-weight: 520;
+    letter-spacing: -0.01em;
+  }
+  .t-h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+    line-height: 1.2;
+    font-weight: 500;
+  }
+  .t-body-lg {
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+    line-height: 1.6;
+  }
+  .t-meta {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gold-600);
+  }
+  .eyebrow--on-navy {
+    color: var(--color-gold-500);
+  }
+
+  .rule {
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--color-gold-500);
+    border: 0;
+  }
+
+  /* ─── containers + section ──────────────────────────────────────────────── */
+  .wrap {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .wrap--wide {
+    max-width: var(--container-wide);
+  }
+  .wrap--narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .section {
+    padding-block: var(--section-y);
+  }
+  .section--navy {
+    background: var(--color-navy-900);
+    color: #fff;
+    position: relative;
+    overflow: clip;
+  }
+  .section--navy-deep {
+    background: var(--color-navy-950);
+    color: #fff;
+  }
+  .section--paper {
+    background: var(--color-paper);
+    color: var(--color-ink-900);
+  }
+  .section--white {
+    background: var(--color-white);
+    color: var(--color-ink-900);
+  }
+
+  /* ─── buttons ───────────────────────────────────────────────────────────── */
+  .btn {
+    --_pad-y: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: var(--_pad-y) 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    transition:
+      transform var(--dur) var(--ease),
+      background-color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+  .btn:active {
+    transform: translateY(0);
+  }
+  .btn--primary {
+    background: var(--color-gold-600);
+    color: var(--color-navy-900);
+  }
+  .btn--primary:hover {
+    background: var(--color-gold-500);
+    transform: translateY(-1px);
+  }
+  .btn--lg {
+    min-height: 56px;
+    padding: 1.125rem 2.25rem;
+    font-size: 0.875rem;
+  }
+  .btn--secondary-navy {
+    background: transparent;
+    color: #fff;
+    border-color: rgb(255 255 255 / 0.5);
+  }
+  .btn--secondary-navy:hover {
+    border-color: #fff;
+    background: rgb(255 255 255 / 0.08);
+    transform: translateY(-1px);
+  }
+  .btn--secondary-light {
+    background: transparent;
+    color: var(--color-navy-900);
+    border-color: var(--color-navy-900);
+  }
+  .btn--secondary-light:hover {
+    background: rgb(10 26 56 / 0.05);
+    transform: translateY(-1px);
+  }
+  .btn--block {
+    width: 100%;
+  }
+
+  /* ─── tertiary arrow link ───────────────────────────────────────────────── */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+  }
+  .link-arrow svg {
+    color: var(--color-gold-600);
+    transition: transform var(--dur) var(--ease);
+  }
+  .link-arrow:hover svg {
+    transform: translateX(3px);
+  }
+  .link-arrow--on-navy {
+    color: #fff;
+  }
+  .link-arrow--on-navy svg {
+    color: var(--color-gold-500);
+  }
+
+  /* ─── star row ──────────────────────────────────────────────────────────── */
+  .stars {
+    display: inline-flex;
+    gap: 0.25rem;
+    color: var(--color-gold-500);
+    vertical-align: middle;
+  }
+
+  /* ─── card ──────────────────────────────────────────────────────────────── */
+  .card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    transition:
+      transform var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-gold-500);
+    box-shadow:
+      0 1px 2px rgb(16 33 63 / 0.04),
+      0 14px 30px -16px rgb(16 33 63 / 0.16);
+  }
+
+  /* ─── seam divider — thin gold/red civic band between sections ──────────── */
+  .seam {
+    height: 6px;
+    border: 0;
+    margin: 0;
+    background: linear-gradient(
+      90deg,
+      var(--color-gold-500) 0 60%,
+      var(--color-red-600) 60% 100%
+    );
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* ─── scroll reveal (progressive enhancement — only hides when JS is present) ── */
+@layer utilities {
+  :root.js .reveal > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity var(--dur-slow) var(--ease),
+      transform var(--dur-slow) var(--ease);
+    transition-delay: calc(var(--i, 0) * 60ms);
+  }
+  :root.js .reveal.is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─── reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal > * {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,73 @@
+---
+/**
+ * Single consistent icon set — civic glyphs, wayfinding, socials.
+ * Stroke icons share weight 1.75 / round joins; `star` is a filled civic motif.
+ */
+interface Props {
+  name:
+    | "star"
+    | "menu"
+    | "close"
+    | "arrow-right"
+    | "building"
+    | "users"
+    | "briefcase"
+    | "heart"
+    | "clock"
+    | "pin"
+    | "calendar"
+    | "check"
+    | "external"
+    | "instagram"
+    | "linkedin"
+    | "facebook";
+  size?: number;
+  class?: string;
+}
+const { name, size = 20, class: cls } = Astro.props;
+const stroke = {
+  "arrow-right": '<path d="M4 12h15M13 5l7 7-7 7"/>',
+  menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  building:
+    '<path d="M4 21V8l8-4 8 4v13"/><path d="M9 21v-5h6v5"/><path d="M9 11h.01M15 11h.01"/>',
+  users:
+    '<path d="M16 20v-2a4 4 0 0 0-3-3.87"/><path d="M4 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="10" cy="7" r="3.2"/><path d="M17 3.5a3.2 3.2 0 0 1 0 6"/>',
+  briefcase:
+    '<rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+  heart:
+    '<path d="M12 20s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5.5C19 15.65 12 20 12 20z"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/>',
+  pin: '<path d="M12 21s-6.5-5.5-6.5-11A6.5 6.5 0 0 1 18.5 10c0 5.5-6.5 11-6.5 11z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  calendar:
+    '<rect x="3.5" y="5" width="17" height="16" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  check: '<path d="M4 12.5l5 5L20 6"/>',
+  external:
+    '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  linkedin:
+    '<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 17v-7"/>',
+  facebook:
+    '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v7h4v-7h3l1-4h-4V8a1 1 0 0 1 1-1z"/>',
+};
+const filled = {
+  star: '<path d="M12 2.4l2.7 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.1 6.1 20.3l1.2-6.4L2.6 9.1l6.4-.8z"/>',
+  instagram:
+    '<rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="17" cy="7" r="1.3"/>',
+};
+const isFilled = name === "star" || name === "instagram";
+const body = isFilled ? filled[name as "star" | "instagram"] : stroke[name as keyof typeof stroke];
+---
+<svg
+  class={cls}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill={name === "star" ? "currentColor" : "none"}
+  stroke={isFilled && name !== "star" ? undefined : "currentColor"}
+  stroke-width={isFilled ? undefined : 1.75}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  set:html={body}
+/>

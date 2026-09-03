@@ -1,0 +1,60 @@
+---
+/** MYPC identity lockup — civic star mark + wordmark. Used in header, footer, mobile nav. */
+interface Props {
+  sub?: boolean; // show the "Mayor's Young Professional Council" sub-line
+  class?: string;
+}
+const { sub = false, class: cls } = Astro.props;
+---
+<a href="/" class={`logo ${cls ?? ""}`} aria-label="MYPC home">
+  <svg class="logo__mark" width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+    <g stroke="var(--color-gold-500)" stroke-width="1" opacity="0.55">
+      <path d="M20 20 3 12M20 20 6 34M20 20 37 13M20 20 33 35M20 20 20 1M20 20 20 39" />
+    </g>
+    <path
+      d="M20 3.5l3.6 8 8.7 1-6.4 6 1.6 8.7L20 30.9l-7.1 4.3 1.6-8.7-6.4-6 8.7-1z"
+      fill="var(--color-gold-500)"
+    />
+    <path d="M20 9.5l2.2 5 3.3.4" fill="none" stroke="var(--color-red-600)" stroke-width="1.6" stroke-linecap="round" />
+  </svg>
+  <span class="logo__text">
+    <span class="logo__word">MYPC</span>
+    {sub && <span class="logo__sub">Mayor&rsquo;s Young Professional Council</span>}
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .logo__mark {
+    flex: none;
+  }
+  .logo__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .logo__word {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+    color: #fff;
+  }
+  .logo__sub {
+    margin-top: 3px;
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-cloud);
+  }
+  @media (max-width: 1023px) {
+    .logo__sub {
+      display: none;
+    }
+  }
+</style>

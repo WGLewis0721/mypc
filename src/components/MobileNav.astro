@@ -1,0 +1,166 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { NAV } from "../data/home";
+
+interface Props {
+  active?: string;
+}
+const { active } = Astro.props;
+---
+
+<div id="mobile-nav" class="mnav" data-mnav hidden>
+  <div class="mnav__bar">
+    <Logo />
+    <button type="button" class="mnav__close" aria-label="Close menu" data-menu-close>
+      <Icon name="close" size={26} />
+    </button>
+  </div>
+
+  <nav class="mnav__nav" aria-label="Mobile">
+    <ul>
+      {
+        NAV.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={["mnav__link", { "is-active": active === item.key }]}
+              aria-current={active === item.key ? "page" : undefined}
+              data-menu-close
+            >
+              {active === item.key && <Icon name="star" size={16} />}
+              <span>{item.label}</span>
+              <Icon name="arrow-right" size={18} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="mnav__cta">
+    <a href="/#join" class="btn btn--primary btn--lg btn--block">Apply to Join</a>
+    <a href="/donate" class="btn btn--secondary-navy btn--block">Donate</a>
+  </div>
+</div>
+
+<style>
+  .mnav {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: var(--color-navy-950);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem var(--gutter) calc(1.5rem + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: mnav-in var(--dur) var(--ease);
+  }
+  .mnav[hidden] {
+    display: none;
+  }
+  @keyframes mnav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-1.5%);
+    }
+  }
+
+  .mnav__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+  }
+  .mnav__close {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border-on-navy);
+    border-radius: var(--radius-sm);
+    color: #fff;
+  }
+
+  .mnav__nav {
+    margin-top: 0.5rem;
+    flex: 1;
+  }
+  .mnav__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 60px;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-on-navy);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-cloud);
+  }
+  .mnav__link span {
+    margin-right: auto;
+  }
+  .mnav__link :global(svg:last-child) {
+    color: var(--color-gold-500);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+  .mnav__link:hover,
+  .mnav__link.is-active {
+    color: #fff;
+  }
+  .mnav__link:hover :global(svg:last-child),
+  .mnav__link.is-active :global(svg:last-child) {
+    opacity: 1;
+    transform: none;
+  }
+  .mnav__link.is-active :global(svg:first-child) {
+    color: var(--color-gold-500);
+  }
+
+  .mnav__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+  const mnav = document.querySelector<HTMLElement>("[data-mnav]");
+  const openBtns = document.querySelectorAll<HTMLElement>("[data-menu-open]");
+  let lastFocus: HTMLElement | null = null;
+
+  const setOpen = (open: boolean) => {
+    if (!mnav) return;
+    mnav.hidden = !open;
+    document.body.style.overflow = open ? "hidden" : "";
+    openBtns.forEach((b) => b.setAttribute("aria-expanded", String(open)));
+    if (open) {
+      lastFocus = document.activeElement as HTMLElement;
+      mnav.querySelector<HTMLElement>("[data-menu-close]")?.focus();
+    } else {
+      lastFocus?.focus();
+    }
+  };
+
+  openBtns.forEach((b) => b.addEventListener("click", () => setOpen(true)));
+  mnav
+    ?.querySelectorAll<HTMLElement>("[data-menu-close]")
+    .forEach((b) => b.addEventListener("click", () => setOpen(false)));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mnav && !mnav.hidden) setOpen(false);
+  });
+  // Reset on resize up to desktop so the sheet never lingers hidden-but-locked.
+  window.matchMedia("(min-width: 1024px)").addEventListener("change", (e) => {
+    if (e.matches && mnav && !mnav.hidden) setOpen(false);
+  });
+</script>

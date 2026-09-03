@@ -1,0 +1,204 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { FOOTER } from "../data/home";
+const year = new Date().getFullYear();
+---
+
+<footer class="ft section--navy-deep">
+  <div class="wrap wrap--wide ft__grid">
+    <div class="ft__brand">
+      <Logo />
+      <p class="ft__blurb">{FOOTER.blurb}</p>
+      <p class="ft__demo">Concept build. Not a real organization.</p>
+    </div>
+
+    <nav class="ft__col" aria-label="Quick links">
+      <h2 class="ft__h">Quick Links</h2>
+      <ul>
+        {
+          FOOTER.quickLinks.map((l) => (
+            <li>
+              <a href={l.href}>
+                <Icon name="star" size={10} />
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ft__col">
+      <h2 class="ft__h">Contact</h2>
+      <ul class="ft__contact">
+        <li>{FOOTER.contact.email}</li>
+        <li>{FOOTER.contact.phone}</li>
+        <li>{FOOTER.contact.address}</li>
+      </ul>
+      <div class="ft__social">
+        <a href="#" aria-label="Instagram"><Icon name="instagram" size={20} /></a>
+        <a href="#" aria-label="LinkedIn"><Icon name="linkedin" size={20} /></a>
+        <a href="#" aria-label="Facebook"><Icon name="facebook" size={20} /></a>
+      </div>
+    </div>
+
+    <div class="ft__col ft__sponsor">
+      <h2 class="ft__h">Sponsorship</h2>
+      <div class="ft__seal" aria-hidden="true">
+        <Icon name="star" size={26} />
+      </div>
+      <p class="ft__sponsor-line">{FOOTER.sponsor.line}</p>
+      <p class="ft__sponsor-note">{FOOTER.sponsor.note}</p>
+    </div>
+  </div>
+
+  <div class="wrap wrap--wide ft__bar">
+    <p>
+      &copy; {year} Mayor&rsquo;s Young Professional Council (working title). Concept
+      build, not affiliated with any real organization.
+    </p>
+    <div class="ft__bar-links">
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/credits">Site Credits</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    padding-block: clamp(3rem, 2rem + 4vw, 5rem) 0;
+    color: #fff;
+  }
+  .ft__grid {
+    display: grid;
+    gap: 2.5rem 2rem;
+  }
+  @media (min-width: 680px) {
+    .ft__grid {
+      grid-template-columns: 1.6fr 1fr 1.2fr;
+    }
+    .ft__brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 1000px) {
+    .ft__grid {
+      grid-template-columns: 1.8fr 1fr 1.3fr 1.3fr;
+    }
+    .ft__brand {
+      grid-column: auto;
+    }
+  }
+
+  .ft__blurb {
+    margin-top: 1rem;
+    max-width: 42ch;
+    color: var(--color-cloud);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  .ft__demo {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-gold-300);
+  }
+
+  .ft__h {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-gold-500);
+    margin-bottom: 1rem;
+  }
+  .ft__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .ft__col a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9375rem;
+    color: var(--color-cloud);
+    transition: color var(--dur) var(--ease);
+  }
+  .ft__col a :global(svg) {
+    color: var(--color-gold-600);
+  }
+  .ft__col a:hover {
+    color: #fff;
+  }
+  .ft__contact {
+    color: var(--color-cloud);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .ft__social {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  .ft__social a {
+    display: inline-flex;
+    padding: 0.55rem;
+    border: 1px solid var(--border-on-navy);
+    border-radius: var(--radius-sm);
+    color: #fff;
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+  .ft__social a:hover {
+    border-color: var(--color-gold-500);
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .ft__sponsor-line {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: #fff;
+  }
+  .ft__sponsor-note {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.45);
+  }
+  .ft__seal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 0.85rem;
+    border: 1px solid var(--color-gold-600);
+    border-radius: var(--radius-pill);
+    color: var(--color-gold-500);
+  }
+
+  .ft__bar {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--border-on-navy);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: rgb(255 255 255 / 0.5);
+  }
+  .ft__bar-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+  .ft__bar-links a:hover {
+    color: #fff;
+  }
+</style>
